@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import com.zyc.baselibs.ex.IllegalValueException;
 
+@SuppressWarnings("deprecation")
 public class AnnotationUtilsTest {
 	
 	@Test
