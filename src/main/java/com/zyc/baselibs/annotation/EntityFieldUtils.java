@@ -42,7 +42,6 @@ public class EntityFieldUtils {
 		final List<String> uneditableFields = new ArrayList<String>();
 		
 		EntityFieldUtils.eachEntityField(o, new Visitor<Field, Boolean>() {
-			@Override
 			public Boolean visit(Field field) {
 				EntityField ef = field.getAnnotation(EntityField.class);
 				if(ef.uneditable()) {
@@ -59,14 +58,15 @@ public class EntityFieldUtils {
 		final StringBuilder message = new StringBuilder();
 		
 		EntityFieldUtils.eachEntityField(o, new Visitor<Field, Boolean>() {
-			@Override
 			public Boolean visit(Field field) {
 				EntityField ef = field.getAnnotation(EntityField.class);
 				if(ef.required()) {
 					Object v = null;
 					try {
 						v = field.get(o);
-					} catch (IllegalArgumentException | IllegalAccessException e) {
+					} catch (IllegalArgumentException e) {
+						throw new RuntimeException(e.getMessage(), e);
+					} catch (IllegalAccessException e) {
 						throw new RuntimeException(e.getMessage(), e);
 					}
 					

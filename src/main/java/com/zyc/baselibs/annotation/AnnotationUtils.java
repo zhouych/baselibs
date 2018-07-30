@@ -25,7 +25,9 @@ public class AnnotationUtils {
 				Object v = null;
 				try {
 					v = field.get(o);
-				} catch (IllegalArgumentException | IllegalAccessException e) {
+				} catch (IllegalArgumentException e) {
+					throw new RuntimeException(e.getMessage(), e);
+				} catch (IllegalAccessException e) {
 					throw new RuntimeException(e.getMessage(), e);
 				}
 				AssertThrowNonRuntime.notNull(v, String.format("The parameter '%s' is null.", field.getName()));
