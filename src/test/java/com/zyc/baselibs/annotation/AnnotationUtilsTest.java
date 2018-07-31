@@ -2,56 +2,62 @@ package com.zyc.baselibs.annotation;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
+import java.lang.reflect.Field;
 
-import com.zyc.baselibs.ex.IllegalValueException;
+import com.zyc.baselibs.commons.Counter;
+import com.zyc.baselibs.commons.Visitor;
+import com.zyc.baselibs.entities.DataStatus;
 
-@SuppressWarnings("deprecation")
 public class AnnotationUtilsTest {
 	
-	@Test
-	public void verifyTest() {
-		boolean flag = false;
-		
+	public void scanFieldAnnotationTest() {
 		A a = new A();
 		
-		try {
-			AnnotationUtils.verify(a);
-			flag = true;
-		} catch (Exception e) {
-			assertEquals(e instanceof IllegalValueException || e instanceof RuntimeException, true);
-		}
+		final Counter c = new Counter();
 		
-		assertEquals(flag, false);
+		AnnotationUtils.scanFieldAnnotation(a, EntityField.class, new Visitor<Field, Boolean>() {
+			public Boolean visit(Field field) {
+				c.afterPlus();
+				return true;
+			};
+		}, true);
 		
-		a.setId("1");
-
-		try {
-			AnnotationUtils.verify(a);
-			flag = true;
-		} catch (Exception e) {
-			assertEquals(e instanceof IllegalValueException || e instanceof RuntimeException, true);
-		}
+		assertEquals(c.get(), 1);
 		
-		assertEquals(flag, false);
+		AnnotationUtils.scanFieldAnnotation(a, EntityField.class, new Visitor<Field, Boolean>() {
+			public Boolean visit(Field field) {
+				c.afterPlus();
+				return true;
+			};
+		}, false);
 		
-		a.setName("admin");
-
-		try {
-			AnnotationUtils.verify(a);
-			flag = true;
-		} catch (Exception e) {
-			assertEquals(e instanceof IllegalValueException || e instanceof RuntimeException, true);
-		}
+		assertEquals(c.get(), 4);
 		
-		assertEquals(flag, true);
+		AnnotationUtils.scanFieldAnnotation(a, EnumMapping.class, new Visitor<Field, Boolean>() {
+			public Boolean visit(Field field) {
+				c.afterPlus();
+				return true;
+			};
+		}, false);
+		
+		assertEquals(c.get(), 5);
 	}
 	
 	class A {
-		@Required private String id;
+		@EntityField 
+		private String id;
+		@EntityField
+		private String name;
+		@EntityField
+		@EnumMapping(enumClazz = DataStatus.class)
+		private String status;
 		
-		@Required private String name;
-		
+		public String getStatus() {
+			return status;
+		}
+		public void setStatus(String status) {
+			this.status = status;
+		}
 		public String getId() {
 			return id;
 		}

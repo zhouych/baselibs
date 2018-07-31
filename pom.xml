@@ -4,7 +4,7 @@
 
 	<groupId>com.zyc</groupId>
 	<artifactId>baselibs</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<packaging>jar</packaging>
 
 	<name>baselibs</name>
@@ -19,6 +19,12 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
 			<version>4.2.5.RELEASE</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.5</version>
 		</dependency>
 
 		<dependency>

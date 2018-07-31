@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import com.zyc.baselibs.commons.Visitor;
@@ -13,29 +12,12 @@ import com.zyc.baselibs.ex.IllegalValueException;
 
 public class EntityFieldUtils {
 
-	public static <T extends Object> void eachEntityField(T o, Visitor<Field, Boolean> visitor) {
-		EntityFieldUtils.eachEntityField(o, visitor, false);
+	public static <T extends Object> void eachEntityField(T target, Visitor<Field, Boolean> visitor) {
+		EntityFieldUtils.eachEntityField(target, visitor, false);
 	}
 	
-	public static <T extends Object> void eachEntityField(T o, Visitor<Field, Boolean> visitor, boolean enabledBreak) {
-		Assert.notNull(o, "The parameter 'o' is null.");
-
-		Field[] fields = o.getClass().getDeclaredFields();
-		if(null == fields || fields.length == 0) {
-			return;
-		}
-		
-		boolean access = false; 
-		for (Field field : fields) {
-			access = field.isAccessible();
-			field.setAccessible(true);
-			if(field.isAnnotationPresent(EntityField.class)) {
-				if(visitor.visit(field) && enabledBreak) {
-					break;
-				}
-			}
-			field.setAccessible(access);
-		}
+	public static <T extends Object> void eachEntityField(T target, Visitor<Field, Boolean> visitor, boolean enabledBreak) {
+		AnnotationUtils.scanFieldAnnotation(target, EntityField.class, visitor, enabledBreak);
 	}
 	
 	public static <T extends Object> String[] uneditableFields(T o) throws IllegalEditedException {

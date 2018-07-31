@@ -3,6 +3,7 @@ package com.zyc.baselibs.annotation;
 import static org.junit.Assert.assertEquals;
 
 import java.lang.reflect.Field;
+import java.util.Date;
 
 import org.junit.Test;
 
@@ -26,13 +27,13 @@ public class EntityFieldUtilsTest {
 			};
 		});
 
-		assertEquals(counter.get(), 3);
+		assertEquals(counter.get(), 5);
 
 		final Counter counter2 = new Counter();
 		
 		EntityFieldUtils.eachEntityField(ef, new Visitor<Field, Boolean>() {
 			public Boolean visit(Field o) {
-				counter2.beforePlus();
+				counter2.afterPlus();
 				return true;
 			};
 		}, true);
@@ -52,10 +53,10 @@ public class EntityFieldUtilsTest {
 			assertEquals(e instanceof IllegalEditedException || e instanceof RuntimeException, true);
 		}
 		
-		boolean flag = null != fields && fields.length == 2;
+		boolean flag = null != fields && fields.length == 3;
 		assertEquals(flag, true);
 		if(flag) {
-			String str = "id;name;";
+			String str = "id;name;createdat;";
 			for (String field : fields) {
 				assertEquals(str.contains(field + ";"), true);
 				str = str.replace(field + ";", "");
@@ -110,10 +111,65 @@ public class EntityFieldUtilsTest {
 			assertEquals(e instanceof IllegalValueException || e instanceof RuntimeException, true);
 		}
 		
+		assertEquals(flag, false);
+		
+		ef.setCreatedat(new Date());
+		
+		try {
+			EntityFieldUtils.verifyRequired(ef);
+			flag = true;
+		} catch (Exception e) {
+			assertEquals(e instanceof IllegalValueException || e instanceof RuntimeException, true);
+		}
+		
+		assertEquals(flag, false);
+
+		ef.setStatus("enabled");
+		
+		try {
+			EntityFieldUtils.verifyRequired(ef);
+			flag = true;
+		} catch (Exception e) {
+			assertEquals(e instanceof IllegalValueException || e instanceof RuntimeException, true);
+		}
+		
 		assertEquals(flag, true);
 	}
+	
+	class CD {
+		
+		@EntityField(required = true) 
+		private String status;
+		@EntityField(required = true, uneditable = true) 
+		private Date createdat;
+		
+		public CD(String status, Date createdat) {
+			this.status = status;
+			this.createdat = createdat;
+		}
+		
+		public String getStatus() {
+			return status;
+		}
 
-	class EF {
+		public void setStatus(String status) {
+			this.status = status;
+		}
+
+		public Date getCreatedat() {
+			return createdat;
+		}
+
+		public void setCreatedat(Date createdat) {
+			this.createdat = createdat;
+		}
+
+		public CD() {
+			
+		}
+	}
+
+	class EF extends CD {
 		@EntityField(required = true, uneditable = true) 
 		private String id;
 
@@ -127,7 +183,8 @@ public class EntityFieldUtilsTest {
 		
 		public EF() {}
 		
-		public EF(String id, String name, String nick, String description) {
+		public EF(String id, String name, String nick, String description, String status, Date createdat) {
+			super(status, createdat);
 			this.id = id;
 			this.name = name;
 			this.nick = nick;
