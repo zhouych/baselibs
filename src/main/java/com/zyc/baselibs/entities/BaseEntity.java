@@ -10,11 +10,14 @@ public abstract class BaseEntity {
 	@EntityField(required = true)
 	@EnumMapping(enumClazz = DataStatus.class)
 	private String datastatus;
-	@EntityField(required = true, uneditable = true)
+	
+	@EntityField(uneditable = true)
 	private Date createdat;
-	@EntityField
+	
+	@EntityField(uneditable = true)
 	private Date updatedat;
-	@EntityField(required = true)
+	
+	@EntityField(uneditable = true)
 	private int version = 0;
 	
 	public String getDatastatus() {
@@ -53,6 +56,11 @@ public abstract class BaseEntity {
 		this.setDatastatus(DataStatus.ENABLED.toString());
 		this.setCreatedat(new Date());
 		this.setUpdatedat(this.getCreatedat());
-		this.version = 0;
+		this.setVersion(0);
+	}
+	
+	public void update() {
+		this.setUpdatedat(new Date());
+		this.setVersion(this.getVersion() + 1);
 	}
 }

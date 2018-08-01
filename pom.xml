@@ -32,7 +32,13 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.5</version>
 		</dependency>
-
+		<!-- -->
+		<dependency>
+		    <groupId>org.mybatis</groupId>
+		    <artifactId>mybatis</artifactId>
+		    <version>3.4.6</version>
+		</dependency>
+		 
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

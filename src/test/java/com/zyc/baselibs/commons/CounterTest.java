@@ -29,7 +29,6 @@ public class CounterTest {
 		final TestCounter tc = new TestCounter();
 		
 		new Thread(new Runnable() {
-			@Override
 			public void run() {
 				System.out.println("Thread beforePlus ... ");
 				int value = tc.beforePlus();
@@ -38,7 +37,6 @@ public class CounterTest {
 		}).start();
 		
 		new Thread(new Runnable() {
-			@Override
 			public void run() {
 				System.out.println("Thread afterPlus ... ");
 				int value = tc.afterPlus();
