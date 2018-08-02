@@ -1,6 +1,6 @@
 package com.zyc.baselibs.service;
 
-import com.zyc.baselibs.dao.BaseMapper;
+import com.zyc.baselibs.dao.MybatisBaseMapper;
 import com.zyc.baselibs.entities.BaseEntity;
 import com.zyc.baselibs.ex.BussinessException;
 
@@ -18,7 +18,7 @@ public abstract class AbstractBaseService {
 	 * @return Affected row count.
 	 * @throws BussinessException
 	 */
-	protected <T extends BaseEntity> int update(BaseMapper<T> mapper, T entity, String action) throws Exception {
+	protected <T extends BaseEntity> int update(MybatisBaseMapper<T> mapper, T entity, String action) throws Exception {
 		entity.update();
 		int result = mapper.update(entity);
 		if(result < 1) {

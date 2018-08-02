@@ -17,4 +17,5 @@ public @interface EntityField {
 	 * 标记字段是否禁止外部编辑，默认<code>false</code>（即可编辑）。
 	 */
 	boolean uneditable() default false;
+	
 }

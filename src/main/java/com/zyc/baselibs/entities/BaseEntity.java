@@ -2,10 +2,15 @@ package com.zyc.baselibs.entities;
 
 import java.util.Date;
 
+import com.zyc.baselibs.annotation.DatabaseColumn;
 import com.zyc.baselibs.annotation.EntityField;
 import com.zyc.baselibs.annotation.EnumMapping;
 
 public abstract class BaseEntity {
+
+	@EntityField(required = true, uneditable = true)
+	@DatabaseColumn(pk = true)
+	private String id;
 	
 	@EntityField(required = true)
 	@EnumMapping(enumClazz = DataStatus.class)
@@ -18,7 +23,16 @@ public abstract class BaseEntity {
 	private Date updatedat;
 	
 	@EntityField(uneditable = true)
+	@DatabaseColumn(version = true)
 	private int version = 0;
+
+	public String getId() {
+		return id;
+	}
+	
+	public void setId(String id) {
+		this.id = id;
+	}
 	
 	public String getDatastatus() {
 		return datastatus;
