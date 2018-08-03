@@ -40,6 +40,30 @@ public class ReflectUtils {
 		}, enabledBreak);
 	}
 	
+	public static Field getField(String name, Class<?> clazz) {
+		Field field = null;
+		
+		try {
+			field = clazz.getDeclaredField(name);
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException("[ReflectUtils.getField()] - " + e.getMessage(), e);
+		} catch (SecurityException e) {
+			throw new RuntimeException("[ReflectUtils.getField()] - " + e.getMessage(), e);
+		}
+		
+		return field;
+	}
+	
+	public static Object getValue(Field field, Object target) {
+		Object value = null;
+		try {
+			value = field.get(target);
+		} catch (Exception e) {
+			throw new RuntimeException("[ReflectUtils.getValue()] - " + e.getMessage(), e);
+		}
+		return value;
+	}
+	
 	public static boolean isModified(Field field, int[] modifiers) {
 		if(null == modifiers || modifiers.length == 0) {
 			return false;

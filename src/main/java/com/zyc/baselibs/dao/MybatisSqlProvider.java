@@ -9,15 +9,25 @@ import org.apache.log4j.Logger;
 
 import com.zyc.baselibs.annotation.DatabaseUtils;
 import com.zyc.baselibs.commons.ReflectUtils;
+import com.zyc.baselibs.commons.StringUtils;
 import com.zyc.baselibs.commons.Visitor;
+import com.zyc.baselibs.vo.Pagination;
 
 public class MybatisSqlProvider {
 	
 	private static final Logger logger = Logger.getLogger(MybatisSqlProvider.class); 
 	
+	public static final String PARAM_KEY_ENTITY = "entity";
+	
+	public static final String PARAM_KEY_PAGINATION = "pagination";
+	
+	public static final String PARAM_KEY_ID = "id";
+
+	public static final String PARAM_KEY_CLASS = "class";
+	
 	protected static final String PK = "pk";
 	
-	protected static final String VERSION = "version";
+	protected static final String VERSION = "version"; 
 	
 	public String insert(final Object entity) {
 		Class<?> clazz = entity.getClass();
@@ -67,14 +77,7 @@ public class MybatisSqlProvider {
 		//前提要求：应用到该sql的函数以及函数调用方，在执行最终delete的sql时，确保需要作为删除条件对应的实体对象entity的属性是有值的，不需要作为删除条件的实体对象是没有值的。
 		ReflectUtils.scanFields(clazz, new Visitor<Field, Boolean>() {
 			public Boolean visit(Field field) {
-				Object value = null;
-				try {
-					value = field.get(entity);
-				} catch (Exception e) {
-					throw new RuntimeException("[MybatisSqlProvider.delete()] - " + e.getMessage(), e);
-				}
-
-				if(null != value) {
+				if(validValue(field, entity)) {
 					deleteSql.append(" and ").append(DatabaseUtils.getColumnName(field, true)).append("=#{").append(field.getName()).append("}");
 				}
 				return false;
@@ -128,7 +131,6 @@ public class MybatisSqlProvider {
 		
 		//更新必须条件之一：主键匹配
 		builder.append(" where ").append(DatabaseUtils.getColumnName(pk, true)).append("=#{").append(pk.getName()).append("}");
-		
 
 		Field version = (Field) container.get(VERSION);
 		if(null != version) {
@@ -141,7 +143,91 @@ public class MybatisSqlProvider {
 		return sql;
 	}
 	
+	/**
+	 * 生成排序分页查询sql
+	 * @param entity 传输查询的过滤条件实体对象，该实体对象对应的数据库表也即是要查询的表
+	 * @param pageNumber 页码，从1开始。如果传入的值小于1，则取缺省值（缺省值=1）。
+	 * @param pageRowCount 每页行数。如果传入的值小于1，则取缺省值（缺省值=20）。
+	 * @param order 排序字段，取过滤条件实体对象的字段名称
+	 * @param asc 排序方式：true - asc（升序）；false - desc（降序）。
+	 * @return sql语句
+	 */
+	public String selectByPage(Map<String, Object> param) {
+		Object entity = param.get(PARAM_KEY_ENTITY);
+		Pagination pagination = (Pagination) param.get(PARAM_KEY_PAGINATION);
+		
+		StringBuilder selectSql = new StringBuilder(this.select(entity));
+		
+		//根据传入的排序字段进行排序，如果排序字段没有值则认为是业务上不需要可以排序，采用数据库层面的默认排序即可。
+		if(StringUtils.isNotBlank(pagination.getOrder())) {
+			String column = DatabaseUtils.getColumnName(ReflectUtils.getField(pagination.getOrder(), entity.getClass()), true);
+			selectSql.append(" order by ").append(column).append(" ").append(pagination.isAsc() ? "asc" : "desc");
+		}
+		
+		//根据分页参数进行分页
+		selectSql.append(" limit ").append(pagination.getStartIndex()).append(",").append(pagination.getPageRowCount());
+
+		String sql = selectSql.toString();
+		logger.debug("[MybatisSqlProvider.selectByPage()] - " + sql);
+		return sql;
+	}
+	
 	public String select(final Object entity) {
-		return null;
+		Class<?> clazz = entity.getClass();
+		String table = DatabaseUtils.getTableName(clazz);
+		final StringBuilder selectSql = new StringBuilder();
+		selectSql.append("select * from ").append(table).append(" where 1=1 ");
+
+		//业务逻辑：支持全字段作为条件进行查询，没有条件（实体对象中所有字段都没有值）则查询全表数据
+		ReflectUtils.scanFields(clazz, new Visitor<Field, Boolean>() {
+			public Boolean visit(Field field) {
+				if(validValue(field, entity)) {
+					selectSql.append(" and ").append(DatabaseUtils.getColumnName(field, true)).append("=#{").append(field.getName()).append("}");
+				}
+				return false;
+			}
+		}, false, new int[] { Modifier.STATIC, Modifier.FINAL });
+		
+		String sql = selectSql.toString();
+		logger.debug("[MybatisSqlProvider.select()] - " + sql);
+		return sql;
+	}
+	
+	public String load(Map<String, Object> param) {
+		String id = (String) param.get(PARAM_KEY_ID);
+		Class<?> clazz = (Class<?>) param.get(PARAM_KEY_CLASS);
+		if(StringUtils.isBlank(id)) {
+			throw new RuntimeException("[MybatisSqlProvider.load()] - Unable to load data with a null primary key. (object=" + clazz.getName() + ")");
+		}
+		
+		final StringBuilder selectSql = new StringBuilder();
+		selectSql.append("select * from ").append(DatabaseUtils.getTableName(clazz)).append(" where 1=1 ");
+		
+		ReflectUtils.scanFields(clazz, new Visitor<Field, Boolean>() {
+			public Boolean visit(Field field) {
+				if(DatabaseUtils.isPrimaryKey(field)) {
+					selectSql.append(" and ").append(DatabaseUtils.getColumnName(field, true)).append("=#{").append(PARAM_KEY_ID).append("}");
+					return true;
+				}
+				return false;
+			}
+		}, true, new int[] { Modifier.STATIC, Modifier.FINAL });
+		
+		String sql = selectSql.toString();
+		logger.debug("[MybatisSqlProvider.load()] - " + sql);
+		return sql;
+	}
+	
+	private boolean validValue(Field field, Object target) {
+		Object value = ReflectUtils.getValue(field, target);
+		if(null == value) {
+			return false;
+		}
+		
+		if(value instanceof String) {
+			return StringUtils.isNotBlank((String) value);
+		} else {
+			return true;
+		}
 	}
 }

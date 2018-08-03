@@ -3,12 +3,15 @@ package com.zyc.baselibs.dao;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.zyc.baselibs.annotation.DatabaseColumn;
 import com.zyc.baselibs.annotation.DatabaseTable;
+import com.zyc.baselibs.vo.Pagination;
 
 public class MybatisSqlProviderTest {
 	static MybatisSqlProvider provider  = null;
@@ -82,6 +85,69 @@ public class MybatisSqlProviderTest {
 		_Test4 test4 = new _Test4();
 		sql = provider.update(test4);
 		assertEquals(sql, " update test4s set name=#{name} where id=#{id}");
+	}
+	
+	@Test
+	public void selectTest() {
+		_Test test = new _Test();
+		String sql = provider.select(test);
+		assertEquals(sql, "select * from tests where 1=1 ");
+		
+		test.setId("123");
+		test.setName("admin");
+		test.setDescription("test");
+		test.setCreatedat(new Date());
+		test.setVersion("0");
+
+		sql = provider.select(test);
+		assertEquals(sql, "select * from tests where 1=1  and username=#{name} and description=#{description} and id=#{id} and createdat=#{createdat} and version=#{version}");
+	}
+	
+	@Test
+	public void selectByPageTest() {
+
+		_Test test = new _Test();
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put(MybatisSqlProvider.PARAM_KEY_ENTITY, test);
+		
+		param.put(MybatisSqlProvider.PARAM_KEY_PAGINATION, new Pagination(0, 0, null, false));
+		String sql = provider.selectByPage(param);
+		assertEquals(sql.contains("limit 1,20"), true);
+		
+		param.put(MybatisSqlProvider.PARAM_KEY_PAGINATION, new Pagination(0, 1, null, false));
+		sql = provider.selectByPage(param);
+		assertEquals(sql.contains("limit 1,1"), true);
+		
+		param.put(MybatisSqlProvider.PARAM_KEY_PAGINATION, new Pagination(1, 0, null, false));
+		sql = provider.selectByPage(param);
+		assertEquals(sql.contains("limit 1,20"), true);
+		
+		param.put(MybatisSqlProvider.PARAM_KEY_PAGINATION, new Pagination(1, 1, "name", true));
+		sql = provider.selectByPage(param);
+		sql = provider.selectByPage(param);
+		assertEquals(sql.contains("order by username asc limit 1,1"), true);
+		
+		test.setId("123");
+		test.setName("admin");
+		test.setDescription("test");
+		test.setCreatedat(new Date());
+		test.setVersion("0");
+		
+		param.put(MybatisSqlProvider.PARAM_KEY_PAGINATION, new Pagination(0, 0, null, false));
+		sql = provider.selectByPage(param);
+		assertEquals(sql.contains("version=#{version} limit 1,20"), true);
+		
+		param.put(MybatisSqlProvider.PARAM_KEY_PAGINATION, new Pagination(0, 1, null, false));
+		sql = provider.selectByPage(param);
+		assertEquals(sql.contains("version=#{version} limit 1,1"), true);
+		
+		param.put(MybatisSqlProvider.PARAM_KEY_PAGINATION, new Pagination(1, 0, null, false));
+		sql = provider.selectByPage(param);
+		assertEquals(sql.contains("version=#{version} limit 1,20"), true);
+		
+		param.put(MybatisSqlProvider.PARAM_KEY_PAGINATION, new Pagination(1, 1, "name", true));
+		sql = provider.selectByPage(param);
+		assertEquals(sql.contains("version=#{version} order by username asc limit 1,1"), true);
 	}
 	
 }

@@ -7,7 +7,7 @@ import com.zyc.baselibs.annotation.EntityField;
 import com.zyc.baselibs.annotation.EnumMapping;
 
 public abstract class BaseEntity {
-
+	
 	@EntityField(required = true, uneditable = true)
 	@DatabaseColumn(pk = true)
 	private String id;
@@ -21,11 +21,11 @@ public abstract class BaseEntity {
 	
 	@EntityField(uneditable = true)
 	private Date updatedat;
-	
+
 	@EntityField(uneditable = true)
 	@DatabaseColumn(version = true)
-	private int version = 0;
-
+	private Integer version = 0;
+	
 	public String getId() {
 		return id;
 	}
@@ -58,12 +58,20 @@ public abstract class BaseEntity {
 		this.updatedat = updatedat;
 	}
 
-	public int getVersion() {
+	public Integer getVersion() {
 		return version;
 	}
 
-	public void setVersion(int version) {
+	public void setVersion(Integer version) {
 		this.version = version;
+	}
+	
+	public BaseEntity clean() {
+		this.id = null;
+		this.createdat = null;
+		this.updatedat = null;
+		this.version = null;
+		return this;
 	}
 	
 	public void init() {

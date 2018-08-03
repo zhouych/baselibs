@@ -2,6 +2,8 @@ package com.zyc.baselibs.commons;
 
 import java.util.Random;
 
+import com.zyc.baselibs.ex.BussinessException;
+
 public class StringUtils extends org.apache.commons.lang.StringUtils {
 
     public static final char[] ALPHABETS = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
@@ -14,5 +16,17 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 		}
     	
     	return sb.toString();
+    }
+    
+    public static <T extends Enum<T>> T toEnum(Class<T> enumType, String name) throws BussinessException {
+    	T _enum = null;
+    	
+    	try {
+    		_enum = Enum.valueOf(enumType, name);
+		} catch (Exception e) {
+			throw new BussinessException("This enumeration value is not supported. (value=" + name + ")", e);
+		}
+    	
+    	return _enum;
     }
 }
