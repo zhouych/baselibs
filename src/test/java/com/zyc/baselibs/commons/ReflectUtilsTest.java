@@ -1,84 +1,20 @@
 package com.zyc.baselibs.commons;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class ReflectUtils {
-	
-	public static void scanFields(Class<?> clazz, Visitor<Field, Boolean> visitor, boolean enabledBreak) {
-		if(null == clazz) {
-			return;
-		}
-		
-		boolean breakFlag = false;
-		
-		Field[] fields = clazz.getDeclaredFields();
-		if(null != fields && fields.length > 0) {
-			boolean access = false; 
-			for (Field field : fields) {
-				access = field.isAccessible();
-				field.setAccessible(true);
-				if(visitor.visit(field) && enabledBreak) {
-					breakFlag = true;
-					break;
-				}
-				field.setAccessible(access);
-			}
-		}
-		
-		if(!breakFlag) {
-			scanFields(clazz.getSuperclass(), visitor, enabledBreak);	
-		}
-	}
+import org.junit.Test;
 
-	public static void scanFields(Class<?> clazz, final Visitor<Field, Boolean> visitor, final boolean enabledBreak, final int[] excludeModifiers) {
-		ReflectUtils.scanFields(clazz, new Visitor<Field, Boolean>() {
-			public Boolean visit(Field field) {
-				//逻辑：先确保字段没有指定的修饰符，再确保访客的目的达到（visitor.visit函数得到执行)，最后再看是否启用break关键字。
-				//目的：根据以上三个因素决定是否要执行break操作。
-				return !ReflectUtils.isModified(field, excludeModifiers) && visitor.visit(field) && enabledBreak;
-			}
-		}, enabledBreak);
-	}
+public class ReflectUtilsTest {
 	
-	public static Field getField(String name, Class<?> clazz) {
-		Field field = null;
+	@Test
+	public void clazzInstanceTest() {
 		
-		try {
-			field = clazz.getDeclaredField(name);
-		} catch (NoSuchFieldException e) {
-			throw new RuntimeException("[ReflectUtils.getField()] - " + e.getMessage(), e);
-		} catch (SecurityException e) {
-			throw new RuntimeException("[ReflectUtils.getField()] - " + e.getMessage(), e);
-		}
+		B b = clazzInstance("com.zyc.baselibs.commons.B", new Object[] { "a", "b", new Integer("1").intValue(), new Date() });
+		System.out.println(b.toString());
 		
-		return field;
-	}
-	
-	public static Object getValue(Field field, Object target) {
-		Object value = null;
-		try {
-			value = field.get(target);
-		} catch (Exception e) {
-			throw new RuntimeException("[ReflectUtils.getValue()] - " + e.getMessage(), e);
-		}
-		return value;
-	}
-	
-	public static boolean isModified(Field field, int[] modifiers) {
-		if(null == modifiers || modifiers.length == 0) {
-			return false;
-		}
-		
-		for (int modifier : modifiers) {
-			if((field.getModifiers() & modifier) != 0) {
-				return true;
-			}
-		}
-		
-		return false;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -115,7 +51,7 @@ public class ReflectUtils {
 		
 		return (T) ins;
 	}
-
+	
 	/**
 	 * 获取纯属于构造器的参数类型列表。</br>
 	 * <p>
@@ -188,5 +124,58 @@ public class ReflectUtils {
 				|| (formalParamType == float.class && (actualParamType == float.class || actualParamType == Float.class))
 				|| (formalParamType == double.class && (actualParamType == double.class || actualParamType == Double.class))
 				|| (formalParamType == boolean.class && (actualParamType == boolean.class || actualParamType == Boolean.class));
+	}
+}
+
+class B {
+	private String b;
+	private int count;
+	private Date date;
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public B() {
+	}
+
+	public B(String a, String b, int count, Date date) {
+		this.b = b;
+		this.count = count;
+		this.date = date;
+	}
+
+	public B(String a, String b, int count) {
+		super();
+		this.b = b;
+		this.count = count;
+		this.date = new Date();
+	}
+
+	public B(Date date, String a, String b, int count) {
+		super();
+		this.b = b;
+		this.count = count;
+		this.date = date;
+	}
+
+	public String getB() {
+		return b;
+	}
+
+	public void setB(String b) {
+		this.b = b;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
+	public Date getDate() {
+		return date;
 	}
 }

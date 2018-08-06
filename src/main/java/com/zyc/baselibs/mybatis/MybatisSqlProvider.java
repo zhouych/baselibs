@@ -1,4 +1,4 @@
-package com.zyc.baselibs.dao;
+package com.zyc.baselibs.mybatis;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -23,7 +23,7 @@ public class MybatisSqlProvider {
 	
 	public static final String PARAM_KEY_ID = "id";
 
-	public static final String PARAM_KEY_CLASS = "class";
+	public static final String PARAM_KEY_CLASS = "clazz";
 	
 	protected static final String PK = "pk";
 	
@@ -193,6 +193,7 @@ public class MybatisSqlProvider {
 		return sql;
 	}
 	
+	//public String load(String id, Class<?> clazz) {
 	public String load(Map<String, Object> param) {
 		String id = (String) param.get(PARAM_KEY_ID);
 		Class<?> clazz = (Class<?>) param.get(PARAM_KEY_CLASS);

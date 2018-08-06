@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.UpdateProvider;
 
 import com.zyc.baselibs.entities.BaseEntity;
+import com.zyc.baselibs.mybatis.MybatisSqlProvider;
 import com.zyc.baselibs.vo.Pagination;
 
 public interface MybatisBaseMapper<T extends BaseEntity> {
@@ -23,7 +24,7 @@ public interface MybatisBaseMapper<T extends BaseEntity> {
 	int update(T entity) throws Exception;
 
 	@SelectProvider(type = MybatisSqlProvider.class, method = "load")
-	T load(@Param("id") String id, @Param("class") Class<T> clazz);
+	T load(@Param(MybatisSqlProvider.PARAM_KEY_ID) String id, @Param(MybatisSqlProvider.PARAM_KEY_CLASS) Class<T> clazz);
 	
 	@SelectProvider(type = MybatisSqlProvider.class, method = "select")
 	List<T> select(T entity);

@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import com.zyc.baselibs.annotation.DatabaseColumn;
 import com.zyc.baselibs.annotation.DatabaseTable;
+import com.zyc.baselibs.mybatis.MybatisSqlProvider;
 import com.zyc.baselibs.vo.Pagination;
 
 public class MybatisSqlProviderTest {
@@ -148,6 +149,17 @@ public class MybatisSqlProviderTest {
 		param.put(MybatisSqlProvider.PARAM_KEY_PAGINATION, new Pagination(1, 1, "name", true));
 		sql = provider.selectByPage(param);
 		assertEquals(sql.contains("version=#{version} order by username asc limit 1,1"), true);
+	}
+	
+	@Test
+	public void loadTest() {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put(MybatisSqlProvider.PARAM_KEY_ID, "a");
+		
+		param.put(MybatisSqlProvider.PARAM_KEY_CLASS, _Test.class);
+		String sql = provider.load(param);
+		//String sql = provider.load("a", _Test.class);
+		assertEquals(sql.contains("select * from tests") && sql.contains("and id=#{id}"), true);
 	}
 	
 }
