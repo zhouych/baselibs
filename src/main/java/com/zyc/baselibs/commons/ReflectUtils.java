@@ -94,10 +94,18 @@ public class ReflectUtils {
 		
 		try {
 			if(CollectionUtils.hasElement(args)) {
-				boolean parameterMismatch = true; 
-				for (Constructor<?> constructor : clazz.getConstructors()) {
+				boolean parameterMismatch = true;
+				for (Constructor<?> constructor : clazz.getDeclaredConstructors()) {
 					if(matchParameterTypes(args, getPureParameterTypes(constructor, clazz))) {
 						parameterMismatch = false;
+						if(clazz.isMemberClass()) {
+							List<Object> temp = new ArrayList<Object>();
+							for (Object o : args) {
+								temp.add(o);
+							}
+							temp.add(0, instanceOuterClass(clazz, true));
+							args = temp.toArray();
+						}
 						ins = constructor.newInstance(args);
 						break;
 					}
@@ -115,13 +123,39 @@ public class ReflectUtils {
 		
 		return (T) ins;
 	}
+	
+	private static Object instanceOuterClass(Class<?> outerClazz, boolean triggerSource) throws Exception {
+		if(!outerClazz.isMemberClass()) {
+			return triggerSource ? null : outerClazz.newInstance();
+		}
 
+		Object ins = null;
+		Constructor<?> constructor = null;
+		boolean parameterMismatch = true;
+		
+		for (Constructor<?> outerConstructor : outerClazz.getDeclaredConstructors()) {
+			Class<?>[] paramTypeClazzs = outerConstructor.getParameterTypes();
+			if(null != paramTypeClazzs && paramTypeClazzs.length == 1) {
+				parameterMismatch =false;
+				ins = instanceOuterClass(paramTypeClazzs[0], false);
+				constructor = outerConstructor;
+				break;
+			}
+		}
+		
+		if(parameterMismatch) {
+			throw new RuntimeException("Internal class parameter mismatch, instantiation failed.");
+		}
+
+		return triggerSource ? ins : constructor.newInstance(new Object[] { ins });
+	}
+	
 	/**
 	 * 获取纯属于构造器的参数类型列表。</br>
 	 * <p>
 	 * 逻辑:</br>
 	 * 有可能构造器所属类是一个内部类，内部类的构造器<code>getParameterTypes</code>函数取到的参数类型列表会包含外部类的类型。
-	 * 这种情况下，需要将外部类的类型剔除掉，得到纯属于构造器的参数类型列表。
+	 * 这种情况下，将外部类的类型剔除掉，得到纯属于构造器的参数类型列表。
 	 * </p>
 	 * @param constructor 构造器实例对象
 	 * @return 参数类型列表
