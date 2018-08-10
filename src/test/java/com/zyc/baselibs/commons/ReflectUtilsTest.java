@@ -1,18 +1,35 @@
 package com.zyc.baselibs.commons;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Date;
 
 import org.junit.Test;
 
-public class ReflectUtilsTest<B> {
+import com.zyc.baselibs.commons.C.A;
+import com.zyc.baselibs.commons.C.A.B;
+
+public class ReflectUtilsTest {
 
 	@Test
 	public void clazzInstanceTest() {
-		B b = ReflectUtils.clazzInstance("com.zyc.baselibs.commons.C$A$B", new Object[] { "a", "b", new Integer("1").intValue(), new Date() });
-		System.out.println(b.toString());
+		C c = new C();
+		A a = c.new A();
+		
+		B b = ReflectUtils.clazzInstance("com.zyc.baselibs.commons.C$A$B", a, new Object[] { "a", "b", new Integer("1").intValue(), new Date() });
+		assertEquals(b != null && b.getClass() == B.class, true);
+
+		B b2 = ReflectUtils.clazzInstance("com.zyc.baselibs.commons.C$A$B", null, new Object[] { "a", "b", new Integer("1").intValue(), new Date() });
+		assertEquals(b2 != null && b2.getClass() == B.class, true);
+
+		B b3 = ReflectUtils.clazzInstance("com.zyc.baselibs.commons.C$A$B", new Object[] { "a", "b", new Integer("1").intValue(), new Date() });
+		assertEquals(b3 != null && b3.getClass() == B.class, true);
 
 		D d = ReflectUtils.clazzInstance("com.zyc.baselibs.commons.D", new Object[] { "a", "b", new Integer("1").intValue(), new Date() });
-		System.out.println(d.toString());
+		assertEquals(d != null && d.getClass() == D.class, true);
+		
+		D d2 = ReflectUtils.clazzInstance("com.zyc.baselibs.commons.D", null, new Object[] { "a", "b", new Integer("1").intValue(), new Date() });
+		assertEquals(d2 != null && d2.getClass() == D.class, true);
 	}
 }
 

@@ -9,27 +9,28 @@ import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.UpdateProvider;
 
 import com.zyc.baselibs.entities.BaseEntity;
-import com.zyc.baselibs.mybatis.MybatisSqlProvider;
+import com.zyc.baselibs.mybatis.SqlProviderFactory;
+import com.zyc.baselibs.mybatis.SqlProviderSupport;
 import com.zyc.baselibs.vo.Pagination;
 
 public interface MybatisBaseMapper<T extends BaseEntity> {
 	
-	@InsertProvider(type = MybatisSqlProvider.class, method = "insert")
+	@InsertProvider(type = SqlProviderFactory.class, method = "insert")
 	int insert(T entity) throws Exception;
 	
-	@DeleteProvider(type = MybatisSqlProvider.class, method = "delete")
+	@DeleteProvider(type = SqlProviderFactory.class, method = "delete")
 	int delete(T entity) throws Exception;
 	
-	@UpdateProvider(type = MybatisSqlProvider.class, method = "update")
+	@UpdateProvider(type = SqlProviderFactory.class, method = "update")
 	int update(T entity) throws Exception;
-
-	@SelectProvider(type = MybatisSqlProvider.class, method = "load")
-	T load(@Param(MybatisSqlProvider.PARAM_KEY_ID) String id, @Param(MybatisSqlProvider.PARAM_KEY_CLASS) Class<T> clazz);
 	
-	@SelectProvider(type = MybatisSqlProvider.class, method = "select")
+	@SelectProvider(type = SqlProviderFactory.class, method = "load")
+	T load(@Param(SqlProviderSupport.PARAM_KEY_ID) String id, @Param(SqlProviderSupport.PARAM_KEY_CLASS) Class<T> clazz);
+	
+	@SelectProvider(type = SqlProviderFactory.class, method = "select")
 	List<T> select(T entity);
 
-	@SelectProvider(type = MybatisSqlProvider.class, method = "selectByPage")
-	List<T> selectByPage(@Param(MybatisSqlProvider.PARAM_KEY_ENTITY) T entity, @Param(MybatisSqlProvider.PARAM_KEY_PAGINATION) Pagination pagination);
+	@SelectProvider(type = SqlProviderFactory.class, method = "selectByPage")
+	List<T> selectByPage(@Param(SqlProviderSupport.PARAM_KEY_ENTITY) T entity, @Param(SqlProviderSupport.PARAM_KEY_PAGINATION) Pagination pagination);
 	
 }

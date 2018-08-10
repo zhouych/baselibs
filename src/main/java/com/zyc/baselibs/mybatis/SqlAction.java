@@ -1,13 +1,14 @@
 package com.zyc.baselibs.mybatis;
 
-public enum SqlType {
+public enum SqlAction {
 	INSERT("Insert"),
 	DELETE("Delete"),
 	UPDATE("Update"),
 	SELECT("Select"),
-	SELECTBYPAGE("SelectByPage");
+	SELECTBYPAGE("SelectByPage"),
+	LOAD("Load");
 	
-	private SqlType(String name) {
+	private SqlAction(String name) {
 		this.name = name;
 	}
 	

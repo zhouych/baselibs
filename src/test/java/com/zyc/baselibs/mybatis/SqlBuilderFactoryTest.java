@@ -1,4 +1,4 @@
-package com.zyc.baselibs.dao;
+package com.zyc.baselibs.mybatis;
 
 import static org.junit.Assert.assertEquals;
 
@@ -11,15 +11,16 @@ import org.junit.Test;
 
 import com.zyc.baselibs.annotation.DatabaseColumn;
 import com.zyc.baselibs.annotation.DatabaseTable;
-import com.zyc.baselibs.mybatis.MybatisSqlProvider;
+import com.zyc.baselibs.mybatis.SqlProviderFactory;
+import com.zyc.baselibs.mybatis.SqlProviderSupport;
 import com.zyc.baselibs.vo.Pagination;
 
-public class MybatisSqlProviderTest {
-	static MybatisSqlProvider provider  = null;
+public class SqlBuilderFactoryTest {
+	static SqlProviderFactory provider  = null;
 	
 	@Before
 	public void before() {
-		provider = new MybatisSqlProvider();
+		provider = new SqlProviderFactory();
 	}
 	
 	@Test
@@ -109,21 +110,21 @@ public class MybatisSqlProviderTest {
 
 		_Test test = new _Test();
 		Map<String, Object> param = new HashMap<String, Object>();
-		param.put(MybatisSqlProvider.PARAM_KEY_ENTITY, test);
+		param.put(SqlProviderSupport.PARAM_KEY_ENTITY, test);
 		
-		param.put(MybatisSqlProvider.PARAM_KEY_PAGINATION, new Pagination(0, 0, null, false));
+		param.put(SqlProviderSupport.PARAM_KEY_PAGINATION, new Pagination(0, 0, null, false));
 		String sql = provider.selectByPage(param);
 		assertEquals(sql.contains("limit 1,20"), true);
 		
-		param.put(MybatisSqlProvider.PARAM_KEY_PAGINATION, new Pagination(0, 1, null, false));
+		param.put(SqlProviderSupport.PARAM_KEY_PAGINATION, new Pagination(0, 1, null, false));
 		sql = provider.selectByPage(param);
 		assertEquals(sql.contains("limit 1,1"), true);
 		
-		param.put(MybatisSqlProvider.PARAM_KEY_PAGINATION, new Pagination(1, 0, null, false));
+		param.put(SqlProviderSupport.PARAM_KEY_PAGINATION, new Pagination(1, 0, null, false));
 		sql = provider.selectByPage(param);
 		assertEquals(sql.contains("limit 1,20"), true);
 		
-		param.put(MybatisSqlProvider.PARAM_KEY_PAGINATION, new Pagination(1, 1, "name", true));
+		param.put(SqlProviderSupport.PARAM_KEY_PAGINATION, new Pagination(1, 1, "name", true));
 		sql = provider.selectByPage(param);
 		sql = provider.selectByPage(param);
 		assertEquals(sql.contains("order by username asc limit 1,1"), true);
@@ -134,19 +135,19 @@ public class MybatisSqlProviderTest {
 		test.setCreatedat(new Date());
 		test.setVersion("0");
 		
-		param.put(MybatisSqlProvider.PARAM_KEY_PAGINATION, new Pagination(0, 0, null, false));
+		param.put(SqlProviderSupport.PARAM_KEY_PAGINATION, new Pagination(0, 0, null, false));
 		sql = provider.selectByPage(param);
 		assertEquals(sql.contains("version=#{version} limit 1,20"), true);
 		
-		param.put(MybatisSqlProvider.PARAM_KEY_PAGINATION, new Pagination(0, 1, null, false));
+		param.put(SqlProviderSupport.PARAM_KEY_PAGINATION, new Pagination(0, 1, null, false));
 		sql = provider.selectByPage(param);
 		assertEquals(sql.contains("version=#{version} limit 1,1"), true);
 		
-		param.put(MybatisSqlProvider.PARAM_KEY_PAGINATION, new Pagination(1, 0, null, false));
+		param.put(SqlProviderSupport.PARAM_KEY_PAGINATION, new Pagination(1, 0, null, false));
 		sql = provider.selectByPage(param);
 		assertEquals(sql.contains("version=#{version} limit 1,20"), true);
 		
-		param.put(MybatisSqlProvider.PARAM_KEY_PAGINATION, new Pagination(1, 1, "name", true));
+		param.put(SqlProviderSupport.PARAM_KEY_PAGINATION, new Pagination(1, 1, "name", true));
 		sql = provider.selectByPage(param);
 		assertEquals(sql.contains("version=#{version} order by username asc limit 1,1"), true);
 	}
@@ -154,9 +155,9 @@ public class MybatisSqlProviderTest {
 	@Test
 	public void loadTest() {
 		Map<String, Object> param = new HashMap<String, Object>();
-		param.put(MybatisSqlProvider.PARAM_KEY_ID, "a");
+		param.put(SqlProviderSupport.PARAM_KEY_ID, "a");
 		
-		param.put(MybatisSqlProvider.PARAM_KEY_CLASS, _Test.class);
+		param.put(SqlProviderSupport.PARAM_KEY_CLASS, _Test.class);
 		String sql = provider.load(param);
 		//String sql = provider.load("a", _Test.class);
 		assertEquals(sql.contains("select * from tests") && sql.contains("and id=#{id}"), true);
