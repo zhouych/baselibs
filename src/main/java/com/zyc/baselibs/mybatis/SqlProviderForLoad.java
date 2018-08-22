@@ -32,7 +32,9 @@ public class SqlProviderForLoad extends SqlProviderSupport implements SqlProvide
 		ReflectUtils.scanFields(clazz, new Visitor<Field, Boolean>() {
 			public Boolean visit(Field field) {
 				if(DatabaseUtils.isPrimaryKey(field)) {
-					selectSql.append(" and ").append(DatabaseUtils.getColumnName(field, true)).append("=#{").append(PARAM_KEY_ID).append("}");
+					String jdbcType = getJdbcType(field);
+					jdbcType = StringUtils.isBlank(jdbcType) ? "" : (",jdbcType=" + jdbcType); 
+					selectSql.append(" and ").append(DatabaseUtils.getColumnName(field, true)).append("=#{").append(PARAM_KEY_ID).append(jdbcType).append("}");
 					return true;
 				}
 				return false;

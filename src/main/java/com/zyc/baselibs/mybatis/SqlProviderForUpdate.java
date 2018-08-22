@@ -20,7 +20,7 @@ public class SqlProviderForUpdate extends SqlProviderSupport implements SqlProvi
 	public String generateSql(final Object entity) {
 		Class<?> clazz = entity.getClass();
 		final String table = DatabaseUtils.getTableName(clazz);
-		final StringBuilder builder = new StringBuilder(" update ").append(table).append(" set ");
+		final StringBuilder builder = new StringBuilder("update ").append(table).append(" set ");
 		int before = builder.length();
 		final Map<String, Object> container = new HashMap<String, Object>();
 		
@@ -35,7 +35,7 @@ public class SqlProviderForUpdate extends SqlProviderSupport implements SqlProvi
 						container.put(VERSION, field);
 					}
 					String columnName = DatabaseUtils.getColumnName(field, true);
-					builder.append(columnName).append("=#{").append(field.getName()).append("},");	
+					builder.append(columnName).append("=").append(genParamPlaceholder(field)).append(",");
 				}
 				return false;
 			}

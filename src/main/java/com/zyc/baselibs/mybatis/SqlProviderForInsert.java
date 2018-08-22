@@ -32,7 +32,7 @@ public class SqlProviderForInsert extends SqlProviderSupport implements SqlProvi
 				
 				if(null != value) {
 					columnSql.append(DatabaseUtils.getColumnName(field, true)).append(",");
-					valueParamSql.append("#{" + field.getName() + "},");
+					valueParamSql.append(genParamPlaceholder(field)).append(",");
 				}
 				return false;
 			}

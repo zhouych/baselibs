@@ -9,7 +9,15 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DatabaseColumn {
 	String name() default "";
+	/**
+	 * 主键字段标识
+	 * @return
+	 */
 	boolean pk() default false;
+	/**
+	 * 版本字段标识
+	 * @return
+	 */
 	boolean version() default false;
 	/**
 	 * 给标记的字段定义一个无效值，只支持String/int/double等等基本类型。</br>
@@ -19,4 +27,6 @@ public @interface DatabaseColumn {
 	 * @return
 	 */
 	String invalidValue() default "";
+	
+	String jdbcType() default "";
 }
