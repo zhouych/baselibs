@@ -31,6 +31,19 @@ public class ReflectUtilsTest {
 		D d2 = ReflectUtils.clazzInstance("com.zyc.baselibs.commons.D", null, new Object[] { "a", "b", new Integer("1").intValue(), new Date() });
 		assertEquals(d2 != null && d2.getClass() == D.class, true);
 	}
+
+	@Test
+	public void findAnnotationTest() {
+		Deprecated deprecated = ReflectUtils.findAnnotation("aaa", AA.class, Deprecated.class);
+		assertEquals(null != deprecated, true);
+	}
+}
+
+class AA {
+	@Deprecated
+	public void aaa() {
+		
+	}
 }
 
 class D {

@@ -1,13 +1,18 @@
 package com.zyc.baselibs.commons;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.log4j.Logger;
 
 public class ReflectUtils {
+	
+	private static final Logger logger = Logger.getLogger(ReflectUtils.class); 
 	
 	public static void scanFields(Class<?> clazz, Visitor<Field, Boolean> visitor, boolean enabledBreak) {
 		if(null == clazz) {
@@ -228,5 +233,21 @@ public class ReflectUtils {
 				|| (formalParamType == float.class && (actualParamType == float.class || actualParamType == Float.class))
 				|| (formalParamType == double.class && (actualParamType == double.class || actualParamType == Double.class))
 				|| (formalParamType == boolean.class && (actualParamType == boolean.class || actualParamType == Boolean.class));
+	}
+	
+	public static <T extends Annotation> T findAnnotation(String sourceMethod, Class<?> sourceClazz, Class<T> annotationClazz) {
+		Method method = null;
+		
+		try {
+			method = sourceClazz.getMethod(sourceMethod);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+		
+		if(null == method || !method.isAnnotationPresent(annotationClazz)) {
+			return null;
+		}
+		
+		return method.getAnnotation(annotationClazz);
 	}
 }
