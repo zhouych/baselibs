@@ -17,10 +17,7 @@ public abstract class AbstractSpringBoot2ApplicationProperties {
 
 	@Value("${server.port}")
 	private int serverPort;
-
-	@Value("${server.servlet.context-path}")
-	private String serverServletContextPath;
-
+	
 	public String getSpringApplicationName() {
 		return springApplicationName;
 	}
@@ -34,6 +31,6 @@ public abstract class AbstractSpringBoot2ApplicationProperties {
 	}
 
 	public String getServerServletContextPath() {
-		return serverServletContextPath;
+		return "";
 	}
 }
