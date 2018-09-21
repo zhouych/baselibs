@@ -10,23 +10,23 @@ import com.zyc.baselibs.commons.Visitor;
 import com.zyc.baselibs.ex.IllegalEditedException;
 import com.zyc.baselibs.ex.IllegalValueException;
 
-public class EntityFieldUtils {
+public class FieldRuleUtils {
 
 	public static <T extends Object> void eachEntityField(T target, Visitor<Field, Boolean> visitor) {
-		EntityFieldUtils.eachEntityField(target, visitor, false);
+		FieldRuleUtils.eachEntityField(target, visitor, false);
 	}
 	
 	public static <T extends Object> void eachEntityField(T target, Visitor<Field, Boolean> visitor, boolean enabledBreak) {
-		AnnotationUtils.scanFieldAnnotation(target, EntityField.class, visitor, enabledBreak);
+		AnnotationUtils.scanFieldAnnotation(target, FieldRule.class, visitor, enabledBreak);
 	}
 	
 	public static <T extends Object> String[] uneditableFields(T o) throws IllegalEditedException {
 		final List<String> uneditableFields = new ArrayList<String>();
 		
-		EntityFieldUtils.eachEntityField(o, new Visitor<Field, Boolean>() {
+		FieldRuleUtils.eachEntityField(o, new Visitor<Field, Boolean>() {
 			public Boolean visit(Field field) {
-				EntityField ef = field.getAnnotation(EntityField.class);
-				if(ef.uneditable()) {
+				FieldRule ef = field.getAnnotation(FieldRule.class);
+				if(ef.externalUneditable()) {
 					uneditableFields.add(field.getName());
 				}
 				return true;
@@ -39,9 +39,9 @@ public class EntityFieldUtils {
 	public static <T extends Object> void verifyRequired(final T o) throws IllegalValueException {
 		final StringBuilder message = new StringBuilder();
 		
-		EntityFieldUtils.eachEntityField(o, new Visitor<Field, Boolean>() {
+		FieldRuleUtils.eachEntityField(o, new Visitor<Field, Boolean>() {
 			public Boolean visit(Field field) {
-				EntityField ef = field.getAnnotation(EntityField.class);
+				FieldRule ef = field.getAnnotation(FieldRule.class);
 				if(ef.required()) {
 					Object v = null;
 					try {

@@ -15,7 +15,7 @@ public class AnnotationUtilsTest {
 		
 		final Counter c = new Counter();
 		
-		AnnotationUtils.scanFieldAnnotation(a, EntityField.class, new Visitor<Field, Boolean>() {
+		AnnotationUtils.scanFieldAnnotation(a, FieldRule.class, new Visitor<Field, Boolean>() {
 			public Boolean visit(Field field) {
 				c.afterPlus();
 				return true;
@@ -24,7 +24,7 @@ public class AnnotationUtilsTest {
 		
 		assertEquals(c.get(), 1);
 		
-		AnnotationUtils.scanFieldAnnotation(a, EntityField.class, new Visitor<Field, Boolean>() {
+		AnnotationUtils.scanFieldAnnotation(a, FieldRule.class, new Visitor<Field, Boolean>() {
 			public Boolean visit(Field field) {
 				c.afterPlus();
 				return true;
@@ -44,11 +44,11 @@ public class AnnotationUtilsTest {
 	}
 	
 	class A {
-		@EntityField 
+		@FieldRule 
 		private String id;
-		@EntityField
+		@FieldRule
 		private String name;
-		@EntityField
+		@FieldRule
 		@EnumMapping(enumClazz = DataStatus.class)
 		private String status;
 		

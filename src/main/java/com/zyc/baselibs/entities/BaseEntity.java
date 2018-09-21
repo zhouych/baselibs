@@ -3,26 +3,26 @@ package com.zyc.baselibs.entities;
 import java.util.Date;
 
 import com.zyc.baselibs.annotation.DatabaseColumn;
-import com.zyc.baselibs.annotation.EntityField;
+import com.zyc.baselibs.annotation.FieldRule;
 import com.zyc.baselibs.annotation.EnumMapping;
 
 public abstract class BaseEntity {
 	
-	@EntityField(required = true, uneditable = true)
+	@FieldRule(required = true, externalUneditable = true)
 	@DatabaseColumn(pk = true)
 	private String id;
 	
-	@EntityField(required = true)
+	@FieldRule(required = true)
 	@EnumMapping(enumClazz = DataStatus.class)
 	private String datastatus;
 	
-	@EntityField(uneditable = true)
+	@FieldRule(externalUneditable = true)
 	private Date createdat;
 	
-	@EntityField(uneditable = true)
+	@FieldRule(externalUneditable = true)
 	private Date updatedat;
 
-	@EntityField(uneditable = true)
+	@FieldRule(externalUneditable = true)
 	@DatabaseColumn(version = true)
 	private Integer version = 0;
 	

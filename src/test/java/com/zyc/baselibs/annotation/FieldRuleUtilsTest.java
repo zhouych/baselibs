@@ -12,7 +12,7 @@ import com.zyc.baselibs.commons.Visitor;
 import com.zyc.baselibs.ex.IllegalEditedException;
 import com.zyc.baselibs.ex.IllegalValueException;
 
-public class EntityFieldUtilsTest {
+public class FieldRuleUtilsTest {
 	
 	public void eachEntityFieldTest() {
 
@@ -20,7 +20,7 @@ public class EntityFieldUtilsTest {
 
 		final Counter counter = new Counter();
 		
-		EntityFieldUtils.eachEntityField(ef, new Visitor<Field, Boolean>() {
+		FieldRuleUtils.eachEntityField(ef, new Visitor<Field, Boolean>() {
 			public Boolean visit(Field o) {
 				counter.beforePlus();
 				return true;
@@ -31,7 +31,7 @@ public class EntityFieldUtilsTest {
 
 		final Counter counter2 = new Counter();
 		
-		EntityFieldUtils.eachEntityField(ef, new Visitor<Field, Boolean>() {
+		FieldRuleUtils.eachEntityField(ef, new Visitor<Field, Boolean>() {
 			public Boolean visit(Field o) {
 				counter2.afterPlus();
 				return true;
@@ -48,7 +48,7 @@ public class EntityFieldUtilsTest {
 		EF ef = new EF();
 		
 		try {
-			fields = EntityFieldUtils.uneditableFields(ef);
+			fields = FieldRuleUtils.uneditableFields(ef);
 		} catch (Exception e) {
 			assertEquals(e instanceof IllegalEditedException || e instanceof RuntimeException, true);
 		}
@@ -72,7 +72,7 @@ public class EntityFieldUtilsTest {
 		EF ef = new EF();
 		
 		try {
-			EntityFieldUtils.verifyRequired(ef);
+			FieldRuleUtils.verifyRequired(ef);
 			flag = true;
 		} catch (Exception e) {
 			assertEquals(e instanceof IllegalValueException || e instanceof RuntimeException, true);
@@ -83,7 +83,7 @@ public class EntityFieldUtilsTest {
 		ef.setId("1");
 		
 		try {
-			EntityFieldUtils.verifyRequired(ef);
+			FieldRuleUtils.verifyRequired(ef);
 			flag = true;
 		} catch (Exception e) {
 			assertEquals(e instanceof IllegalValueException || e instanceof RuntimeException, true);
@@ -94,7 +94,7 @@ public class EntityFieldUtilsTest {
 		ef.setName("Michael");
 		
 		try {
-			EntityFieldUtils.verifyRequired(ef);
+			FieldRuleUtils.verifyRequired(ef);
 			flag = true;
 		} catch (Exception e) {
 			assertEquals(e instanceof IllegalValueException || e instanceof RuntimeException, true);
@@ -105,7 +105,7 @@ public class EntityFieldUtilsTest {
 		ef.setNick("Michael");
 		
 		try {
-			EntityFieldUtils.verifyRequired(ef);
+			FieldRuleUtils.verifyRequired(ef);
 			flag = true;
 		} catch (Exception e) {
 			assertEquals(e instanceof IllegalValueException || e instanceof RuntimeException, true);
@@ -116,7 +116,7 @@ public class EntityFieldUtilsTest {
 		ef.setCreatedat(new Date());
 		
 		try {
-			EntityFieldUtils.verifyRequired(ef);
+			FieldRuleUtils.verifyRequired(ef);
 			flag = true;
 		} catch (Exception e) {
 			assertEquals(e instanceof IllegalValueException || e instanceof RuntimeException, true);
@@ -127,7 +127,7 @@ public class EntityFieldUtilsTest {
 		ef.setStatus("enabled");
 		
 		try {
-			EntityFieldUtils.verifyRequired(ef);
+			FieldRuleUtils.verifyRequired(ef);
 			flag = true;
 		} catch (Exception e) {
 			assertEquals(e instanceof IllegalValueException || e instanceof RuntimeException, true);
@@ -138,9 +138,9 @@ public class EntityFieldUtilsTest {
 	
 	class CD {
 		
-		@EntityField(required = true) 
+		@FieldRule(required = true) 
 		private String status;
-		@EntityField(required = true, uneditable = true) 
+		@FieldRule(required = true, externalUneditable = true) 
 		private Date createdat;
 		
 		public CD(String status, Date createdat) {
@@ -170,13 +170,13 @@ public class EntityFieldUtilsTest {
 	}
 
 	class EF extends CD {
-		@EntityField(required = true, uneditable = true) 
+		@FieldRule(required = true, externalUneditable = true) 
 		private String id;
 
-		@EntityField(required = true, uneditable = true)
+		@FieldRule(required = true, externalUneditable = true)
 		private String name;
 
-		@EntityField(required = true)
+		@FieldRule(required = true)
 		private String nick;
 		
 		private String description;
