@@ -16,7 +16,7 @@ public class EnumMappingUtilsTest {
 		E e = new E("1", "abc", "asdf");
 		
 		try {
-			EnumMappingUtils.verifyEnumField(e, DataStatus.class);
+			EnumMappingUtils.verifyEnumField(e);
 			flag = true;
 		} catch (Exception ex) {
 			assertEquals(ex instanceof IllegalValueException, true);
@@ -27,7 +27,7 @@ public class EnumMappingUtilsTest {
 		e.setStatus(DataStatus.ENABLED.getText());
 
 		try {
-			EnumMappingUtils.verifyEnumField(e, DataStatus.class);
+			EnumMappingUtils.verifyEnumField(e);
 			flag = true;
 		} catch (Exception ex) {
 			assertEquals(ex instanceof IllegalValueException, true);
@@ -38,7 +38,7 @@ public class EnumMappingUtilsTest {
 		e.setStatus(DataStatus.ENABLED.toString());
 
 		try {
-			EnumMappingUtils.verifyEnumField(e, DataStatus.class);
+			EnumMappingUtils.verifyEnumField(e);
 			flag = true;
 		} catch (Exception ex) {
 			assertEquals(ex instanceof IllegalValueException, true);
@@ -50,7 +50,7 @@ public class EnumMappingUtilsTest {
 		e.setStatus(DataStatus.DELETED.toString());
 
 		try {
-			EnumMappingUtils.verifyEnumField(e, DataStatus.class);
+			EnumMappingUtils.verifyEnumField(e);
 			flag = true;
 		} catch (Exception ex) {
 			assertEquals(ex instanceof IllegalValueException, true);

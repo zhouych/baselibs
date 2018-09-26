@@ -4,8 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.util.StringUtils;
-
+import com.zyc.baselibs.commons.ReflectUtils;
 import com.zyc.baselibs.commons.Visitor;
 import com.zyc.baselibs.ex.IllegalEditedException;
 import com.zyc.baselibs.ex.IllegalValueException;
@@ -43,17 +42,8 @@ public class FieldRuleUtils {
 			public Boolean visit(Field field) {
 				FieldRule ef = field.getAnnotation(FieldRule.class);
 				if(ef.required()) {
-					Object v = null;
-					try {
-						v = field.get(o);
-					} catch (IllegalArgumentException e) {
-						throw new RuntimeException(e.getMessage(), e);
-					} catch (IllegalAccessException e) {
-						throw new RuntimeException(e.getMessage(), e);
-					}
-					
-					if(null == v || v instanceof String && !StringUtils.hasText(v.toString())) {
-						message.append(String.format("The parameter '%s' is null or empty. (%s=%s)", field.getName(), field.getName(), String.valueOf(v)));
+					if(ReflectUtils.isNullOrEmpty(field, o)) {
+						message.append(String.format("The parameter '%s' is null or empty.", field.getName()));
 						return true;
 					}
 				}

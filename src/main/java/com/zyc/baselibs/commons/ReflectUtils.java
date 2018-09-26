@@ -74,6 +74,11 @@ public class ReflectUtils {
 		return value;
 	}
 	
+	public static boolean isNullOrEmpty(Field field, Object target) {
+		Object value = ReflectUtils.getValue(field, target);
+		return null == value || (value instanceof String && StringUtils.isBlank(value.toString()));
+	}
+	
 	public static boolean isModified(Field field, int[] modifiers) {
 		if(null == modifiers || modifiers.length == 0) {
 			return false;

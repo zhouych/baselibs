@@ -9,5 +9,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EnumMapping {
 	@SuppressWarnings("rawtypes")
-	Class enumClazz();
+	Class<? extends Enum> enumClazz();
 }
