@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,8 @@ import org.apache.log4j.Logger;
 public class ReflectUtils {
 	
 	private static final Logger logger = Logger.getLogger(ReflectUtils.class); 
+	
+	public static final int[] MODIFIER_STATIC$FINAL = new int[] { Modifier.STATIC, Modifier.FINAL };
 	
 	public static void scanFields(Class<?> clazz, final Visitor<Field, Boolean> visitor, final boolean enabledBreak) {
 		ReflectUtils.scanFields(clazz, new Visitor<Field, Boolean>() {
