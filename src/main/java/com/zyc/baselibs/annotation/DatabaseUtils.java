@@ -1,6 +1,8 @@
 package com.zyc.baselibs.annotation;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.zyc.baselibs.commons.StringUtils;
 
@@ -40,5 +42,55 @@ public class DatabaseUtils {
 		}
 		
 		return StringUtils.isBlank(column.name()) ? field.getName() : column.name();
+	}
+	
+	private static final Map<String, String> fieldType2jdbcType = new HashMap<String, String>();
+	
+	static {
+		fieldType2jdbcType.put("boolean", "BOOLEAN");
+		fieldType2jdbcType.put("java.lang.Boolean", "BOOLEAN");
+		fieldType2jdbcType.put("char", "CHAR");
+		fieldType2jdbcType.put("java.lang.Character", "CHAR");
+		fieldType2jdbcType.put("int", "INTEGER");
+		fieldType2jdbcType.put("java.lang.Integer", "INTEGER");
+		fieldType2jdbcType.put("long", "NUMERIC");
+		fieldType2jdbcType.put("java.lang.Long", "NUMERIC");
+		fieldType2jdbcType.put("float", "FLOAT");
+		fieldType2jdbcType.put("java.lang.Float", "FLOAT");
+		fieldType2jdbcType.put("double", "DOUBLE");
+		fieldType2jdbcType.put("java.lang.Double", "DOUBLE");
+		fieldType2jdbcType.put("java.lang.String", "VARCHAR");
+		fieldType2jdbcType.put("java.util.Date", "TIMESTAMP");
+	}
+	
+	public static String getJdbcType(Field field) {
+		DatabaseColumn column = DatabaseUtils.getColumn(field);
+		String jdbcType = column != null ? column.jdbcType() : null;
+		if(StringUtils.isBlank(jdbcType)) {
+			jdbcType = fieldType2jdbcType.get(field.getType().getName());
+		}
+		return jdbcType;
+	}
+	
+	public static boolean getNullable(Field field) {
+		DatabaseColumn column = DatabaseUtils.getColumn(field);
+		return column == null || column.nullable();
+	}
+
+	private static final Map<String, String> jdbcType2dbType = new HashMap<String, String>();
+
+	static {
+		jdbcType2dbType.put("BOOLEAN", "TINYINT(1)");
+		jdbcType2dbType.put("CHAR", "CHAR(1)");
+		jdbcType2dbType.put("INT", "INT");
+		jdbcType2dbType.put("NUMERIC", "LONGBLOB");
+		jdbcType2dbType.put("FLOAT", "FLOAT");
+		jdbcType2dbType.put("DOUBLE", "DOUBLE");
+		jdbcType2dbType.put("VARCHAR", "VARCHAR(128)");
+		jdbcType2dbType.put("TIMESTAMP", "TIMESTAMP");
+	}
+
+	public static String getDbType(Field field) {
+		return jdbcType2dbType.get(getJdbcType(field));
 	}
 }

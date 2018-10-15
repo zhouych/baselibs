@@ -1,6 +1,8 @@
 package com.zyc.baselibs.mybatis;
 
 import com.zyc.baselibs.commons.ReflectUtils;
+import com.zyc.baselibs.dao.SqlAction;
+import com.zyc.baselibs.dao.SqlProvider;
 
 public final class SqlProviderFactory {
 

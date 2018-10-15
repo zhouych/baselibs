@@ -1,4 +1,4 @@
-package com.zyc.baselibs.mybatis;
+package com.zyc.baselibs.dao;
 
 public enum SqlAction {
 	INSERT("Insert"),

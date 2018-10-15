@@ -11,16 +11,16 @@ import org.junit.Test;
 
 import com.zyc.baselibs.annotation.DatabaseColumn;
 import com.zyc.baselibs.annotation.DatabaseTable;
-import com.zyc.baselibs.mybatis.SqlActionCommander;
-import com.zyc.baselibs.mybatis.SqlProviderSupport;
+import com.zyc.baselibs.dao.SqlScriptCommander;
+import com.zyc.baselibs.dao.SqlProviderSupport;
 import com.zyc.baselibs.vo.Pagination;
 
 public class SqlActionCommanderTest {
-	static SqlActionCommander commander  = null;
+	static SqlScriptCommander commander  = null;
 	
 	@Before
 	public void before() {
-		commander = new SqlActionCommander();
+		commander = new SqlScriptCommander();
 	}
 	
 	@Test

@@ -1,8 +1,10 @@
-package com.zyc.baselibs.mybatis;
+package com.zyc.baselibs.dao;
 
 import java.util.Map;
 
-public final class SqlActionCommander {
+import com.zyc.baselibs.mybatis.SqlProviderFactory;
+
+public final class SqlScriptCommander {
 	
 	public String insert(final Object entity) {
 		return SqlProviderFactory.getInstance(SqlAction.INSERT, null).generateSql(entity);

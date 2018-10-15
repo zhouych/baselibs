@@ -10,6 +10,8 @@ import com.zyc.baselibs.annotation.DatabaseUtils;
 import com.zyc.baselibs.commons.ReflectUtils;
 import com.zyc.baselibs.commons.StringUtils;
 import com.zyc.baselibs.commons.Visitor;
+import com.zyc.baselibs.dao.SqlProvider;
+import com.zyc.baselibs.dao.SqlProviderSupport;
 
 public class SqlProviderForLoad extends SqlProviderSupport implements SqlProvider {
 	
@@ -32,7 +34,7 @@ public class SqlProviderForLoad extends SqlProviderSupport implements SqlProvide
 		ReflectUtils.scanFields(clazz, new Visitor<Field, Boolean>() {
 			public Boolean visit(Field field) {
 				if(DatabaseUtils.isPrimaryKey(field)) {
-					String jdbcType = getJdbcType(field);
+					String jdbcType = DatabaseUtils.getJdbcType(field);
 					jdbcType = StringUtils.isBlank(jdbcType) ? "" : (",jdbcType=" + jdbcType); 
 					selectSql.append(" and ").append(DatabaseUtils.getColumnName(field, true)).append("=#{").append(PARAM_KEY_ID).append(jdbcType).append("}");
 					return true;

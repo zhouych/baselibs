@@ -29,4 +29,6 @@ public @interface DatabaseColumn {
 	String invalidValue() default "";
 	
 	String jdbcType() default "";
+	
+	boolean nullable() default true;
 }

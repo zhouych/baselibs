@@ -1,9 +1,11 @@
 package com.zyc.baselibs.entities;
 
 import java.util.Date;
+import java.util.UUID;
 
 import com.zyc.baselibs.annotation.DatabaseColumn;
 import com.zyc.baselibs.annotation.FieldRule;
+import com.zyc.baselibs.commons.StringUtils;
 import com.zyc.baselibs.annotation.EnumMapping;
 
 public abstract class BaseEntity {
@@ -84,5 +86,11 @@ public abstract class BaseEntity {
 	public void update() {
 		this.setUpdatedat(new Date());
 		this.setVersion(this.getVersion() + 1);
+	}
+	
+	public void generateId() {
+		if(StringUtils.isBlank(this.getId())) {
+			this.setId(UUID.randomUUID().toString());
+		}
 	}
 }
