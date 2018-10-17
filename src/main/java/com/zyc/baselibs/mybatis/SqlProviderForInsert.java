@@ -34,7 +34,7 @@ public class SqlProviderForInsert extends SqlProviderSupport implements SqlProvi
 				
 				if(null != value) {
 					columnSql.append(DatabaseUtils.getColumnName(field, true)).append(",");
-					valueParamSql.append(genParamPlaceholder(field)).append(",");
+					valueParamSql.append(genMybatisParamPlaceholder(field)).append(",");
 				}
 				return false;
 			}

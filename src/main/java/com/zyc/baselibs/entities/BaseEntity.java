@@ -1,5 +1,6 @@
 package com.zyc.baselibs.entities;
 
+import java.sql.JDBCType;
 import java.util.Date;
 import java.util.UUID;
 
@@ -11,21 +12,24 @@ import com.zyc.baselibs.annotation.EnumMapping;
 public abstract class BaseEntity {
 	
 	@FieldRule(required = true, externalUneditable = true)
-	@DatabaseColumn(pk = true)
+	@DatabaseColumn(pk = true, jdbcType = JDBCType.VARCHAR, jdbcTypeVarcharLength = 36)
 	private String id;
 	
 	@FieldRule(required = true)
 	@EnumMapping(enumClazz = DataStatus.class)
+	@DatabaseColumn(jdbcType = JDBCType.VARCHAR, jdbcTypeVarcharLength = 64)
 	private String datastatus;
 	
 	@FieldRule(externalUneditable = true)
+	@DatabaseColumn(jdbcType = JDBCType.TIMESTAMP)
 	private Date createdat;
 	
 	@FieldRule(externalUneditable = true)
+	@DatabaseColumn(jdbcType = JDBCType.TIMESTAMP)
 	private Date updatedat;
 
 	@FieldRule(externalUneditable = true)
-	@DatabaseColumn(version = true)
+	@DatabaseColumn(version = true, jdbcType = JDBCType.INTEGER)
 	private Integer version = 0;
 	
 	public String getId() {

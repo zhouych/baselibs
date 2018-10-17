@@ -2,6 +2,7 @@ package com.zyc.baselibs.mybatis;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.sql.JDBCType;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -34,9 +35,9 @@ public class SqlProviderForLoad extends SqlProviderSupport implements SqlProvide
 		ReflectUtils.scanFields(clazz, new Visitor<Field, Boolean>() {
 			public Boolean visit(Field field) {
 				if(DatabaseUtils.isPrimaryKey(field)) {
-					String jdbcType = DatabaseUtils.getJdbcType(field);
-					jdbcType = StringUtils.isBlank(jdbcType) ? "" : (",jdbcType=" + jdbcType); 
-					selectSql.append(" and ").append(DatabaseUtils.getColumnName(field, true)).append("=#{").append(PARAM_KEY_ID).append(jdbcType).append("}");
+					JDBCType jdbcType = DatabaseUtils.getJdbcType(field);
+					String jdbcTypeValue = jdbcType == null ? "" : (",jdbcType=" + jdbcType.name()); 
+					selectSql.append(" and ").append(DatabaseUtils.getColumnName(field, true)).append("=#{").append(PARAM_KEY_ID).append(jdbcTypeValue).append("}");
 					return true;
 				}
 				return false;

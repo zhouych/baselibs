@@ -37,7 +37,7 @@ public class SqlProviderForUpdate extends SqlProviderSupport implements SqlProvi
 						container.put(VERSION, field);
 					}
 					String columnName = DatabaseUtils.getColumnName(field, true);
-					builder.append(columnName).append("=").append(genParamPlaceholder(field)).append(",");
+					builder.append(columnName).append("=").append(genMybatisParamPlaceholder(field)).append(",");
 				}
 				return false;
 			}

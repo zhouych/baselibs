@@ -1,6 +1,7 @@
 package com.zyc.baselibs.dao;
 
 import java.lang.reflect.Field;
+import java.sql.JDBCType;
 
 import com.zyc.baselibs.annotation.DatabaseUtils;
 import com.zyc.baselibs.commons.ReflectUtils;
@@ -39,12 +40,12 @@ public class SqlProviderSupport {
 		}
 	}
 	
-	public static String genParamPlaceholder(Field field) {
-		String jdbcType = DatabaseUtils.getJdbcType(field);
-		if(StringUtils.isBlank(jdbcType)) {
+	public static String genMybatisParamPlaceholder(Field field) {
+		JDBCType jdbcType = DatabaseUtils.getJdbcType(field);
+		if(jdbcType == null) {
 			return "#{" + field.getName() + "}";
 		} else {
-			return String.format("#{%s,jdbcType=%s}", field.getName(), jdbcType);
+			return String.format("#{%s,jdbcType=%s}", field.getName(), jdbcType.name());
 		}
 	}
 }

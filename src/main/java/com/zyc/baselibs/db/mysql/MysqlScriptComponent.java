@@ -1,13 +1,11 @@
-package com.zyc.baselibs.mysql;
+package com.zyc.baselibs.db.mysql;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.zyc.baselibs.annotation.DatabaseColumn;
 import com.zyc.baselibs.annotation.DatabaseUtils;
 import com.zyc.baselibs.commons.ClassLoaderUtils;
 import com.zyc.baselibs.commons.ReflectUtils;
@@ -17,14 +15,20 @@ import com.zyc.baselibs.commons.Visitor;
 @Component
 public class MysqlScriptComponent {
 	
-	static final String FORAMT_TABLE_CREATE_SQL_SCRIPT 
-	= "DROP TABLE IF EXISTS `%s`;" + "\n"
+	private static final String FORAMT_TABLE_CREATE_SQL_SCRIPT 
+	= "\n"
+	+ "DROP TABLE IF EXISTS `%s`;" + "\n"
 	+ "CREATE TABLE `%s` (" + "\n"
 	+ "%s" + "\n"
-	+ ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+	+ ") ENGINE=InnoDB DEFAULT CHARSET=utf8;" + "\n";
 	
-	static final String FORMAT_COLUMN_DEFINITION = "  `%s` %s %s %s";
+	private static final String FORMAT_COLUMN_DEFINITION = "  `%s` %s %s %s";
 	
+	/**
+	 * 得到指定包下所有orm数据实体的建表sql脚本
+	 * @param entityPackageName orm实体的包名
+	 * @return
+	 */
 	public List<String> entity2tableSqlScripts(String entityPackageName) {
 		List<String> classNames = ClassLoaderUtils.getClazzNames(entityPackageName, true);
 		if(classNames == null || classNames.isEmpty()) {
@@ -48,21 +52,11 @@ public class MysqlScriptComponent {
 					ReflectUtils.scanFields(clazz, new Visitor<Field, Boolean>() {
 						public Boolean visit(Field field) {
 							String column = DatabaseUtils.getColumnName(field, true);
-							String dbType = DatabaseUtils.getDbType(field);
+							String dbType = DatabaseUtils.getMysqlDbType(field);
 							boolean nullable = DatabaseUtils.getNullable(field);
-							String _null = nullable ? "NULL" : "NOT NULL";
-							String defaultValue = nullable ? "DEFAULT NULL" : "";
-
-							DatabaseColumn dc = DatabaseUtils.getColumn(field);
-							if(dc != null) {
-								if(dc.pk()) {
-									dbType = "varchar(36)";
-								} else if(dc.version()) {
-									dbType = "int(11)";
-								}
-							}
-							
-							columns.add("id".equals(column) ? 0 : columns.size(), String.format(FORMAT_COLUMN_DEFINITION, column, dbType, _null, defaultValue));
+							String nullPart = nullable ? "NULL" : "NOT NULL";
+							String defaulPart = nullable ? "DEFAULT NULL" : "";
+							columns.add("id".equals(column) ? 0 : columns.size(), String.format(FORMAT_COLUMN_DEFINITION, column, dbType, nullPart, defaulPart));
 							return false;
 						}
 					}, false, ReflectUtils.MODIFIER_STATIC$FINAL);
@@ -75,14 +69,5 @@ public class MysqlScriptComponent {
 		}
 		
 		return tableSqlScripts;
-	}
-	
-	public static void main(String[] args) {
-		List<String> cities = Arrays.asList("Milan", 
-                "London", 
-                "New York", 
-                "San Francisco");
-		String citiesCommaSeparated = String.join(",", cities);
-		System.out.println(citiesCommaSeparated);
 	}
 }
