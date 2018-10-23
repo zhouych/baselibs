@@ -92,7 +92,10 @@ public abstract class BaseEntity {
 		this.setVersion(this.getVersion() + 1);
 	}
 	
-	public void generateId() {
+	/**
+	 * 当id没有的话就创建一个id
+	 */
+	public void createIdWhenNot() {
 		if(StringUtils.isBlank(this.getId())) {
 			this.setId(UUID.randomUUID().toString());
 		}
