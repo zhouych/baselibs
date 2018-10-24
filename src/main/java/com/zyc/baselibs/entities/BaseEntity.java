@@ -81,7 +81,7 @@ public abstract class BaseEntity {
 	}
 	
 	public void init() {
-		this.setDatastatus(DataStatus.ENABLED.toString());
+		this.setDatastatus(DataStatus.ENABLED.getValue());
 		this.setCreatedat(new Date());
 		this.setUpdatedat(this.getCreatedat());
 		this.setVersion(0);
