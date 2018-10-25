@@ -11,6 +11,8 @@ public class SqlProviderSupport {
 	
 	public static final String PARAM_KEY_ENTITY = "entity";
 	
+	public static final String PARAM_KEY_KEYWORD = "keyword";
+	
 	public static final String PARAM_KEY_PAGINATION = "pagination";
 	
 	public static final String PARAM_KEY_ID = "id";

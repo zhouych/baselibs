@@ -22,8 +22,16 @@ public final class SqlScriptCommander {
 		return SqlProviderFactory.getInstance(SqlAction.SELECTBYPAGE, null).generateSql(param);
 	}
 	
+	public String selectByPageSupportKeyword(Map<String, Object> param) {
+		return SqlProviderFactory.getInstance(SqlAction.KEYWORDSELECTBYPAGE, null).generateSql(param);
+	}
+	
 	public String select(final Object entity) {
 		return SqlProviderFactory.getInstance(SqlAction.SELECT, null).generateSql(entity);
+	}
+	
+	public String selectSupportKeyword(Map<String, Object> param) {
+		return SqlProviderFactory.getInstance(SqlAction.KEYWORDSELECT, null).generateSql(param);
 	}
 	
 	public String load(Map<String, Object> param) {

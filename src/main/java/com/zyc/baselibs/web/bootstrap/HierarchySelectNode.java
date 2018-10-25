@@ -1,5 +1,7 @@
 package com.zyc.baselibs.web.bootstrap;
 
+import com.zyc.baselibs.web.EmptyNodeType;
+
 public class HierarchySelectNode implements java.io.Serializable {
 	
 	private static final long serialVersionUID = 1970665601342554943L;

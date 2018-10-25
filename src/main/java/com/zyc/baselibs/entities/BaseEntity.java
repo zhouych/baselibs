@@ -30,7 +30,7 @@ public abstract class BaseEntity {
 
 	@FieldRule(externalUneditable = true)
 	@DatabaseColumn(version = true, jdbcType = JDBCType.INTEGER)
-	private Integer version = 0;
+	private Integer version = null;
 	
 	public String getId() {
 		return id;

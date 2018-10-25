@@ -15,7 +15,7 @@ public class SqlProviderForInsert extends SqlProviderSupport implements SqlProvi
 	
 	private static final Logger logger = Logger.getLogger(SqlProviderForInsert.class);
 
-	private static final String EX_PREFIX = "[InsertSqlBuilder.generateSql(...)] - ";
+	private static final String EX_PREFIX = "[SqlProviderForInsert.generateSql(...)] - ";
 
 	public String generateSql(final Object entity) {
 		Class<?> clazz = entity.getClass();

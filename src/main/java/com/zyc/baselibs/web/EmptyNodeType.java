@@ -1,4 +1,4 @@
-package com.zyc.baselibs.web.bootstrap;
+package com.zyc.baselibs.web;
 
 /**
  * 空节点类型：用于UI的下拉列表、树形等插件，这些插件的数据源有时候需要一个无业务意义的节点。

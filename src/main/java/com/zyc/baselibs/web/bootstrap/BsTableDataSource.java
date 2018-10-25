@@ -2,7 +2,7 @@ package com.zyc.baselibs.web.bootstrap;
 
 import java.util.List;
 
-public class BootstrapTableDataSource<T extends Object> {
+public class BsTableDataSource<T extends Object> {
 	
 	private int total;
 	

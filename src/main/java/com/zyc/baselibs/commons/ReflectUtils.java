@@ -54,12 +54,15 @@ public class ReflectUtils {
 	}
 	
 	public static Field getField(String name, Class<?> clazz) {
-		Field field = null;
+		if(clazz == null) {
+			return null;
+		}
 		
+		Field field = null;
 		try {
 			field = clazz.getDeclaredField(name);
 		} catch (NoSuchFieldException e) {
-			throw new RuntimeException("[ReflectUtils.getField()] - " + e.getMessage(), e);
+			return getField(name, clazz.getSuperclass());
 		} catch (SecurityException e) {
 			throw new RuntimeException("[ReflectUtils.getField()] - " + e.getMessage(), e);
 		}

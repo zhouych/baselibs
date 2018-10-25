@@ -18,7 +18,7 @@ public class SqlProviderForLoad extends SqlProviderSupport implements SqlProvide
 	
 	private static final Logger logger = Logger.getLogger(SqlProviderForLoad.class); 
 
-	private static final String EX_PREFIX = "[LoadSqlbuilder.generateSql(...)] - ";
+	private static final String EX_PREFIX = "[SqlProviderForLoad.generateSql(...)] - ";
 	
 	@SuppressWarnings("unchecked")
 	public String generateSql(Object obj) {

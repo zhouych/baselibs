@@ -17,7 +17,7 @@ public class SqlProviderForUpdate extends SqlProviderSupport implements SqlProvi
 	
 	private static final Logger logger = Logger.getLogger(SqlProviderForUpdate.class); 
 
-	private static final String EX_PREFIX = "[UpdateSqlBuilder.generateSql(...)] - "; 
+	private static final String EX_PREFIX = "[SqlProviderForUpdate.generateSql(...)] - "; 
 
 	public String generateSql(final Object entity) {
 		Class<?> clazz = entity.getClass();

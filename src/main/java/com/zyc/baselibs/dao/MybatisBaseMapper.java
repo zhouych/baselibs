@@ -27,8 +27,14 @@ public interface MybatisBaseMapper<T extends BaseEntity> {
 	
 	@SelectProvider(type = SqlScriptCommander.class, method = "select")
 	List<T> select(T entity);
+	
+	@SelectProvider(type = SqlScriptCommander.class, method = "selectSupportKeyword")
+	List<T> selectSupportKeyword(@Param(SqlProviderSupport.PARAM_KEY_ENTITY) T entity, @Param(SqlProviderSupport.PARAM_KEY_KEYWORD) String keyword);
 
 	@SelectProvider(type = SqlScriptCommander.class, method = "selectByPage")
 	List<T> selectByPage(@Param(SqlProviderSupport.PARAM_KEY_ENTITY) T entity, @Param(SqlProviderSupport.PARAM_KEY_PAGINATION) Pagination pagination);
+	
+	@SelectProvider(type = SqlScriptCommander.class, method = "selectByPageSupportKeyword")
+	List<T> selectByPageSupportKeyword(@Param(SqlProviderSupport.PARAM_KEY_ENTITY) T entity, @Param(SqlProviderSupport.PARAM_KEY_KEYWORD) String keyword, @Param(SqlProviderSupport.PARAM_KEY_PAGINATION) Pagination pagination);
 	
 }

@@ -5,7 +5,9 @@ public enum SqlAction {
 	DELETE("Delete"),
 	UPDATE("Update"),
 	SELECT("Select"),
+	KEYWORDSELECT("KeywordSelect"),
 	SELECTBYPAGE("SelectByPage"),
+	KEYWORDSELECTBYPAGE("KeywordSelectByPage"),
 	LOAD("Load");
 	
 	private SqlAction(String name) {

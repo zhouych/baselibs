@@ -15,7 +15,7 @@ public class SqlProviderForDelete extends SqlProviderSupport implements SqlProvi
 	
 	private static final Logger logger = Logger.getLogger(SqlProviderForDelete.class); 
 
-	private static final String EX_PREFIX = "[DeleteSqlbuilder.generateSql(...)] - ";
+	private static final String EX_PREFIX = "[SqlProviderForDelete.generateSql(...)] - ";
 	
 	public String generateSql(final Object entity) {
 		Class<?> clazz = entity.getClass();

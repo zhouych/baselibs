@@ -13,9 +13,9 @@ import com.zyc.baselibs.dao.SqlProviderSupport;
 
 public class SqlProviderForSelect extends SqlProviderSupport implements SqlProvider {
 
-	private static final Logger logger = Logger.getLogger(SqlProviderForInsert.class);
+	private static final Logger logger = Logger.getLogger(SqlProviderForSelect.class);
 
-	private static final String EX_PREFIX = "[SelectSqlBuilder.generateSql(...)] - ";
+	private static final String EX_PREFIX = "[SqlProviderForSelect.generateSql(...)] - ";
 	
 	public String generateSql(final Object entity) {
 		Class<?> clazz = entity.getClass();
@@ -27,7 +27,7 @@ public class SqlProviderForSelect extends SqlProviderSupport implements SqlProvi
 		ReflectUtils.scanFields(clazz, new Visitor<Field, Boolean>() {
 			public Boolean visit(Field field) {
 				if(validValue(field, entity)) {
-					selectSql.append(" and ").append(DatabaseUtils.getColumnName(field, true)).append("=").append(genMybatisParamPlaceholder(field));
+					appendSqlWhereConditon(selectSql, field);
 				}
 				return false;
 			}
@@ -36,6 +36,10 @@ public class SqlProviderForSelect extends SqlProviderSupport implements SqlProvi
 		String sql = selectSql.toString();
 		logger.debug(EX_PREFIX + sql);
 		return sql;
+	}
+
+	private void appendSqlWhereConditon(final StringBuilder targetSql, Field field) {
+		targetSql.append(" and ").append(DatabaseUtils.getColumnName(field, true)).append("=").append(genMybatisParamPlaceholder(field));
 	}
 
 }
