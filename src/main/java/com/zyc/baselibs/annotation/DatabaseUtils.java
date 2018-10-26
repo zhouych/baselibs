@@ -25,6 +25,10 @@ public class DatabaseUtils {
 		DatabaseColumn column = DatabaseUtils.getColumn(field);
 		return null != column && column.version();
 	}
+	
+	public static boolean isEnumMapping(Field field) {
+		return field.isAnnotationPresent(EnumMapping.class);
+	}
 
 	/**
 	 * 获取对应数据库的列名

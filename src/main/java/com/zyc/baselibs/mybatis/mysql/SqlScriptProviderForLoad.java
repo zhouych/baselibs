@@ -1,4 +1,4 @@
-package com.zyc.baselibs.mybatis;
+package com.zyc.baselibs.mybatis.mysql;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -11,14 +11,14 @@ import com.zyc.baselibs.annotation.DatabaseUtils;
 import com.zyc.baselibs.commons.ReflectUtils;
 import com.zyc.baselibs.commons.StringUtils;
 import com.zyc.baselibs.commons.Visitor;
-import com.zyc.baselibs.dao.SqlProvider;
-import com.zyc.baselibs.dao.SqlProviderSupport;
+import com.zyc.baselibs.dao.SqlScriptProvider;
+import com.zyc.baselibs.dao.SqlScriptProviderSupport;
 
-public class SqlProviderForLoad extends SqlProviderSupport implements SqlProvider {
+public class SqlScriptProviderForLoad extends SqlScriptProviderSupport implements SqlScriptProvider {
 	
-	private static final Logger logger = Logger.getLogger(SqlProviderForLoad.class); 
+	private static final Logger logger = Logger.getLogger(SqlScriptProviderForLoad.class); 
 
-	private static final String EX_PREFIX = "[SqlProviderForLoad.generateSql(...)] - ";
+	private static final String EX_PREFIX = "[SqlScriptProviderForLoad.generateSql(...)] - ";
 	
 	@SuppressWarnings("unchecked")
 	public String generateSql(Object obj) {

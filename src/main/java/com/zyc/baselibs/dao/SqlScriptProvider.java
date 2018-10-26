@@ -5,7 +5,7 @@ package com.zyc.baselibs.dao;
  * @author zhouyancheng
  *
  */
-public interface SqlProvider {
+public interface SqlScriptProvider {
 	
 	/**
 	 * 生成Sql

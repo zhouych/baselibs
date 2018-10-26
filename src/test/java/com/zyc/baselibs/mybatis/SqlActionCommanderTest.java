@@ -12,7 +12,7 @@ import org.junit.Test;
 import com.zyc.baselibs.annotation.DatabaseColumn;
 import com.zyc.baselibs.annotation.DatabaseTable;
 import com.zyc.baselibs.dao.SqlScriptCommander;
-import com.zyc.baselibs.dao.SqlProviderSupport;
+import com.zyc.baselibs.dao.SqlScriptProviderSupport;
 import com.zyc.baselibs.vo.Pagination;
 
 public class SqlActionCommanderTest {
@@ -114,24 +114,24 @@ public class SqlActionCommanderTest {
 
 		_Test test = new _Test();
 		Map<String, Object> param = new HashMap<String, Object>();
-		param.put(SqlProviderSupport.PARAM_KEY_ENTITY, test);
+		param.put(SqlScriptProviderSupport.PARAM_KEY_ENTITY, test);
 		
-		param.put(SqlProviderSupport.PARAM_KEY_PAGINATION, new Pagination(0, 0, null, false));
+		param.put(SqlScriptProviderSupport.PARAM_KEY_PAGINATION, new Pagination(0, 0, null, false));
 		String sql = commander.selectByPage(param);
 		System.out.println(sql);
 		assertEquals(sql.contains("limit 1,20"), true);
 		
-		param.put(SqlProviderSupport.PARAM_KEY_PAGINATION, new Pagination(0, 1, null, false));
+		param.put(SqlScriptProviderSupport.PARAM_KEY_PAGINATION, new Pagination(0, 1, null, false));
 		sql = commander.selectByPage(param);
 		System.out.println(sql);
 		assertEquals(sql.contains("limit 1,1"), true);
 		
-		param.put(SqlProviderSupport.PARAM_KEY_PAGINATION, new Pagination(1, 0, null, false));
+		param.put(SqlScriptProviderSupport.PARAM_KEY_PAGINATION, new Pagination(1, 0, null, false));
 		sql = commander.selectByPage(param);
 		System.out.println(sql);
 		assertEquals(sql.contains("limit 1,20"), true);
 		
-		param.put(SqlProviderSupport.PARAM_KEY_PAGINATION, new Pagination(1, 1, "name", true));
+		param.put(SqlScriptProviderSupport.PARAM_KEY_PAGINATION, new Pagination(1, 1, "name", true));
 		sql = commander.selectByPage(param);
 		sql = commander.selectByPage(param);
 		System.out.println(sql);
@@ -143,22 +143,22 @@ public class SqlActionCommanderTest {
 		test.setCreatedat(new Date());
 		test.setVersion("0");
 		
-		param.put(SqlProviderSupport.PARAM_KEY_PAGINATION, new Pagination(0, 0, null, false));
+		param.put(SqlScriptProviderSupport.PARAM_KEY_PAGINATION, new Pagination(0, 0, null, false));
 		sql = commander.selectByPage(param);
 		System.out.println(sql);
 		assertEquals(sql.contains("version=#{version,jdbcType=VARCHAR} limit 1,20"), true);
 		
-		param.put(SqlProviderSupport.PARAM_KEY_PAGINATION, new Pagination(0, 1, null, false));
+		param.put(SqlScriptProviderSupport.PARAM_KEY_PAGINATION, new Pagination(0, 1, null, false));
 		sql = commander.selectByPage(param);
 		System.out.println(sql);
 		assertEquals(sql.contains("version=#{version,jdbcType=VARCHAR} limit 1,1"), true);
 		
-		param.put(SqlProviderSupport.PARAM_KEY_PAGINATION, new Pagination(1, 0, null, false));
+		param.put(SqlScriptProviderSupport.PARAM_KEY_PAGINATION, new Pagination(1, 0, null, false));
 		sql = commander.selectByPage(param);
 		System.out.println(sql);
 		assertEquals(sql.contains("version=#{version,jdbcType=VARCHAR} limit 1,20"), true);
 		
-		param.put(SqlProviderSupport.PARAM_KEY_PAGINATION, new Pagination(1, 1, "name", true));
+		param.put(SqlScriptProviderSupport.PARAM_KEY_PAGINATION, new Pagination(1, 1, "name", true));
 		sql = commander.selectByPage(param);
 		System.out.println(sql);
 		assertEquals(sql.contains("version=#{version,jdbcType=VARCHAR} order by username asc limit 1,1"), true);
@@ -167,9 +167,9 @@ public class SqlActionCommanderTest {
 	@Test
 	public void loadTest() {
 		Map<String, Object> param = new HashMap<String, Object>();
-		param.put(SqlProviderSupport.PARAM_KEY_ID, "a");
+		param.put(SqlScriptProviderSupport.PARAM_KEY_ID, "a");
 		
-		param.put(SqlProviderSupport.PARAM_KEY_CLASS, _Test.class);
+		param.put(SqlScriptProviderSupport.PARAM_KEY_CLASS, _Test.class);
 		String sql = commander.load(param);
 		System.out.println(sql);
 		assertEquals(sql.contains("select * from tests") && sql.contains("and id=#{id,jdbcType=VARCHAR}"), true);

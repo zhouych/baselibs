@@ -1,4 +1,4 @@
-package com.zyc.baselibs.mybatis;
+package com.zyc.baselibs.mybatis.mysql;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -6,18 +6,19 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.zyc.baselibs.annotation.DatabaseColumn;
 import com.zyc.baselibs.annotation.DatabaseUtils;
 import com.zyc.baselibs.commons.ReflectUtils;
 import com.zyc.baselibs.commons.StringUtils;
 import com.zyc.baselibs.commons.Visitor;
-import com.zyc.baselibs.dao.SqlProvider;
-import com.zyc.baselibs.dao.SqlProviderSupport;
+import com.zyc.baselibs.dao.SqlScriptProvider;
+import com.zyc.baselibs.dao.SqlScriptProviderSupport;
 
-public class SqlProviderForKeywordSelect extends SqlProviderSupport implements SqlProvider {
+public class SqlScriptProviderForKeywordSelect extends SqlScriptProviderSupport implements SqlScriptProvider {
 
-	private static final Logger logger = Logger.getLogger(SqlProviderForKeywordSelect.class);
+	private static final Logger logger = Logger.getLogger(SqlScriptProviderForKeywordSelect.class);
 
-	private static final String EX_PREFIX = "[SqlProviderForKeywordSelect.generateSql(...)] - ";
+	private static final String EX_PREFIX = "[SqlScriptProviderForKeywordSelect.generateSql(...)] - ";
 	
 	@SuppressWarnings("unchecked")
 	public String generateSql(Object obj) {
@@ -59,13 +60,17 @@ public class SqlProviderForKeywordSelect extends SqlProviderSupport implements S
 
 	protected void appendSqlWhereKeywordMatch(final StringBuilder keywordMatchSql, Field field) {
 		if(this.supportKeyword(field)) {
-			keywordMatchSql.append(" or ").append(DatabaseUtils.getColumnName(field, true)).append(" like '%' || #{").append(PARAM_KEY_KEYWORD).append("} || '%'");
+			keywordMatchSql.append(" or ").append(DatabaseUtils.getColumnName(field, true)).append(" like concat('%',#{").append(PARAM_KEY_KEYWORD).append("},'%')");
 		}
 	}
 	
 	protected boolean supportKeyword(Field field) {
+		DatabaseColumn dbcolumn = DatabaseUtils.getColumn(field);
+		//判断当前字段是否属于非特殊字段（主键、被注解标记为枚举的字段都属于java.lang.String类型，这些属于特殊字段）
+		boolean nonSpecial = (dbcolumn == null || (!dbcolumn.pk())) && !DatabaseUtils.isEnumMapping(field);
 		String fieldType = field.getType().getName();
-		return String.class.getName().equals(fieldType);
+		//非特殊字段且属于java.lang.String类型都支持支持关键字匹配检索
+		return nonSpecial && String.class.getName().equals(fieldType);
 	}
 
 }

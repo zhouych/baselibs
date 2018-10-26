@@ -23,18 +23,18 @@ public interface MybatisBaseMapper<T extends BaseEntity> {
 	int update(T entity) throws Exception;
 	
 	@SelectProvider(type = SqlScriptCommander.class, method = "load")
-	T load(@Param(SqlProviderSupport.PARAM_KEY_ID) String id, @Param(SqlProviderSupport.PARAM_KEY_CLASS) Class<T> clazz);
+	T load(@Param(SqlScriptProviderSupport.PARAM_KEY_ID) String id, @Param(SqlScriptProviderSupport.PARAM_KEY_CLASS) Class<T> clazz);
 	
 	@SelectProvider(type = SqlScriptCommander.class, method = "select")
 	List<T> select(T entity);
 	
 	@SelectProvider(type = SqlScriptCommander.class, method = "selectSupportKeyword")
-	List<T> selectSupportKeyword(@Param(SqlProviderSupport.PARAM_KEY_ENTITY) T entity, @Param(SqlProviderSupport.PARAM_KEY_KEYWORD) String keyword);
+	List<T> selectSupportKeyword(@Param(SqlScriptProviderSupport.PARAM_KEY_ENTITY) T entity, @Param(SqlScriptProviderSupport.PARAM_KEY_KEYWORD) String keyword);
 
 	@SelectProvider(type = SqlScriptCommander.class, method = "selectByPage")
-	List<T> selectByPage(@Param(SqlProviderSupport.PARAM_KEY_ENTITY) T entity, @Param(SqlProviderSupport.PARAM_KEY_PAGINATION) Pagination pagination);
+	List<T> selectByPage(@Param(SqlScriptProviderSupport.PARAM_KEY_ENTITY) T entity, @Param(SqlScriptProviderSupport.PARAM_KEY_PAGINATION) Pagination pagination);
 	
 	@SelectProvider(type = SqlScriptCommander.class, method = "selectByPageSupportKeyword")
-	List<T> selectByPageSupportKeyword(@Param(SqlProviderSupport.PARAM_KEY_ENTITY) T entity, @Param(SqlProviderSupport.PARAM_KEY_KEYWORD) String keyword, @Param(SqlProviderSupport.PARAM_KEY_PAGINATION) Pagination pagination);
+	List<T> selectByPageSupportKeyword(@Param(SqlScriptProviderSupport.PARAM_KEY_ENTITY) T entity, @Param(SqlScriptProviderSupport.PARAM_KEY_KEYWORD) String keyword, @Param(SqlScriptProviderSupport.PARAM_KEY_PAGINATION) Pagination pagination);
 	
 }

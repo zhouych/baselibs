@@ -7,7 +7,7 @@ import com.zyc.baselibs.annotation.DatabaseUtils;
 import com.zyc.baselibs.commons.ReflectUtils;
 import com.zyc.baselibs.commons.StringUtils;
 
-public class SqlProviderSupport {
+public class SqlScriptProviderSupport {
 	
 	public static final String PARAM_KEY_ENTITY = "entity";
 	

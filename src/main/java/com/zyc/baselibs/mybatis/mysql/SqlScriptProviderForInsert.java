@@ -1,4 +1,4 @@
-package com.zyc.baselibs.mybatis;
+package com.zyc.baselibs.mybatis.mysql;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -8,14 +8,14 @@ import org.apache.log4j.Logger;
 import com.zyc.baselibs.annotation.DatabaseUtils;
 import com.zyc.baselibs.commons.ReflectUtils;
 import com.zyc.baselibs.commons.Visitor;
-import com.zyc.baselibs.dao.SqlProvider;
-import com.zyc.baselibs.dao.SqlProviderSupport;
+import com.zyc.baselibs.dao.SqlScriptProvider;
+import com.zyc.baselibs.dao.SqlScriptProviderSupport;
 
-public class SqlProviderForInsert extends SqlProviderSupport implements SqlProvider {
+public class SqlScriptProviderForInsert extends SqlScriptProviderSupport implements SqlScriptProvider {
 	
-	private static final Logger logger = Logger.getLogger(SqlProviderForInsert.class);
+	private static final Logger logger = Logger.getLogger(SqlScriptProviderForInsert.class);
 
-	private static final String EX_PREFIX = "[SqlProviderForInsert.generateSql(...)] - ";
+	private static final String EX_PREFIX = "[SqlScriptProviderForInsert.generateSql(...)] - ";
 
 	public String generateSql(final Object entity) {
 		Class<?> clazz = entity.getClass();

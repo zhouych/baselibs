@@ -1,4 +1,4 @@
-package com.zyc.baselibs.mybatis;
+package com.zyc.baselibs.mybatis.mysql;
 
 import java.util.Map;
 
@@ -9,11 +9,11 @@ import com.zyc.baselibs.commons.ReflectUtils;
 import com.zyc.baselibs.commons.StringUtils;
 import com.zyc.baselibs.vo.Pagination;
 
-public class SqlProviderForSelectByPage extends SqlProviderForSelect {
+public class SqlScriptProviderForKeywordSelectByPage extends SqlScriptProviderForKeywordSelect {
 
-	private static final Logger logger = Logger.getLogger(SqlProviderForSelectByPage.class);
+	private static final Logger logger = Logger.getLogger(SqlScriptProviderForKeywordSelectByPage.class);
 
-	private static final String EX_PREFIX_PAGINATION = "[SqlProviderForSelectByPage.generateSql(...)] - ";
+	private static final String EX_PREFIX_PAGINATION = "[SqlScriptProviderForKeywordSelectByPage.generateSql(...)] - ";
 
 	@SuppressWarnings("unchecked")
 	public String generateSql(Object obj) {
@@ -21,7 +21,7 @@ public class SqlProviderForSelectByPage extends SqlProviderForSelect {
 		Object entity = param.get(PARAM_KEY_ENTITY);
 		Pagination pagination = (Pagination) param.get(PARAM_KEY_PAGINATION);
 		
-		StringBuilder selectSql = new StringBuilder(super.generateSql(entity));
+		StringBuilder selectSql = new StringBuilder(super.generateSql(obj));
 		
 		//根据传入的排序字段进行排序，如果排序字段没有值则认为是业务上不需要可以排序，采用数据库层面的默认排序即可。
 		if(StringUtils.isNotBlank(pagination.getOrder())) {
@@ -30,7 +30,7 @@ public class SqlProviderForSelectByPage extends SqlProviderForSelect {
 		}
 		
 		//根据分页参数进行分页
-		selectSql.append(" limit ").append(pagination.getStartIndex()).append(",").append(pagination.getPageRowCount());
+		selectSql.append(" limit ").append(pagination.getStartIndex() - 1).append(",").append(pagination.getPageRowCount());
 
 		String sql = selectSql.toString();
 		logger.debug(EX_PREFIX_PAGINATION + sql);
