@@ -8,6 +8,7 @@ public enum SqlAction {
 	KEYWORDSELECT("KeywordSelect"),
 	SELECTBYPAGE("SelectByPage"),
 	KEYWORDSELECTBYPAGE("KeywordSelectByPage"),
+	KEYWORDSELECTTOTALCOUNT("KeywordSelectTotalCount"),
 	LOAD("Load");
 	
 	private SqlAction(String name) {

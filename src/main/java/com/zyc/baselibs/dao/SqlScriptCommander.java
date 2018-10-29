@@ -28,6 +28,11 @@ public final class SqlScriptCommander {
 		return SqlScriptProviderFactory.getInstance(databaseType, SqlAction.KEYWORDSELECTBYPAGE, null).generateSql(param);
 	}
 	
+	public String selectTotalCountSupportKeyword(Map<String, Object> param) {
+		return SqlScriptProviderFactory.getInstance(databaseType, SqlAction.KEYWORDSELECTTOTALCOUNT, null).generateSql(param);
+	}
+	
+	
 	public String select(final Object entity) {
 		return SqlScriptProviderFactory.getInstance(databaseType, SqlAction.SELECT, null).generateSql(entity);
 	}

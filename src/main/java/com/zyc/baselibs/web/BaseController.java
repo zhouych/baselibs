@@ -6,6 +6,8 @@ import com.zyc.baselibs.commons.Log4jUtlis;
 import com.zyc.baselibs.ex.ExceptionUtils;
 
 public abstract class BaseController {
+	
+    protected static final String restPath = "/api";
 
 	protected void handleException(ResponseResult result, Exception e, Logger logger) {
 		result.setStatus("1");

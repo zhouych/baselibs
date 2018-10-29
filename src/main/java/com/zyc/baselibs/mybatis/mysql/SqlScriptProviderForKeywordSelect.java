@@ -19,15 +19,23 @@ public class SqlScriptProviderForKeywordSelect extends SqlScriptProviderSupport 
 	private static final Logger logger = Logger.getLogger(SqlScriptProviderForKeywordSelect.class);
 
 	private static final String EX_PREFIX = "[SqlScriptProviderForKeywordSelect.generateSql(...)] - ";
+
+	public static final String PARAM_KEY_ONLY_TOTALCOUNT = "onlyTotalCount";
+	
+	protected boolean isOnlyTotalCount(Map<String, Object> param) {
+		return !param.containsKey(PARAM_KEY_ONLY_TOTALCOUNT) || param.get(PARAM_KEY_ONLY_TOTALCOUNT) == null 
+				? false : Boolean.parseBoolean(param.get(PARAM_KEY_ONLY_TOTALCOUNT).toString());
+	}
 	
 	@SuppressWarnings("unchecked")
 	public String generateSql(Object obj) {
 		Map<String, Object> param = (Map<String, Object>) obj;
 		final Object entity = param.get(PARAM_KEY_ENTITY);
 		final String keyword = (String) param.get(PARAM_KEY_KEYWORD);
+		boolean onlyTotalCount = this.isOnlyTotalCount(param);
 		Class<?> clazz = entity.getClass();
 		String table = DatabaseUtils.getTableName(clazz);
-		final StringBuilder selectSql = new StringBuilder("select * from " + table + " where 1=1 ");
+		final StringBuilder selectSql = new StringBuilder("select " + (onlyTotalCount ? "count(1)" : "*") + " from " + table + " where 1=1 ");
 		final StringBuilder keywordMatchSql = new StringBuilder();
 		
 		//业务逻辑：支持全字段作为条件进行查询，没有条件（实体对象中所有字段都没有值）则查询全表数据

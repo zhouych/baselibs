@@ -37,4 +37,7 @@ public interface MybatisBaseMapper<T extends BaseEntity> {
 	@SelectProvider(type = SqlScriptCommander.class, method = "selectByPageSupportKeyword")
 	List<T> selectByPageSupportKeyword(@Param(SqlScriptProviderSupport.PARAM_KEY_ENTITY) T entity, @Param(SqlScriptProviderSupport.PARAM_KEY_KEYWORD) String keyword, @Param(SqlScriptProviderSupport.PARAM_KEY_PAGINATION) Pagination pagination);
 	
+	@SelectProvider(type = SqlScriptCommander.class, method = "selectTotalCountSupportKeyword")
+	List<T> selectTotalCountSupportKeyword(@Param(SqlScriptProviderSupport.PARAM_KEY_ENTITY) T entity, @Param(SqlScriptProviderSupport.PARAM_KEY_KEYWORD) String keyword, @Param(SqlScriptProviderSupport.PARAM_KEY_PAGINATION) Pagination pagination);
+	
 }
