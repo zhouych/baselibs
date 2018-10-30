@@ -6,7 +6,7 @@ package com.zyc.baselibs.web;
  *
  */
 public enum EmptyNodeType {
-	NONE("none", ""),
+	NONE("none", "------"),
 	ALL("all", "全部"),
 	OPTIONAL("optional", "请选择");
 
