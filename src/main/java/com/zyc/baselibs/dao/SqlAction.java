@@ -5,6 +5,7 @@ public enum SqlAction {
 	DELETE("Delete"),
 	UPDATE("Update"),
 	SELECT("Select"),
+	WHEREIN("WhereIn"),
 	KEYWORDSELECT("KeywordSelect"),
 	SELECTBYPAGE("SelectByPage"),
 	KEYWORDSELECTBYPAGE("KeywordSelectByPage"),

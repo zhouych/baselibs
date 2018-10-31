@@ -26,7 +26,7 @@ public class SqlScriptProviderForLoad extends SqlScriptProviderSupport implement
 		String id = (String) param.get(PARAM_KEY_ID);
 		Class<?> clazz = (Class<?>) param.get(PARAM_KEY_CLASS);
 		if(StringUtils.isBlank(id)) {
-			throw new RuntimeException("[MybatisSqlProvider.load()] - Unable to load data with a null primary key. (object=" + clazz.getName() + ")");
+			throw new RuntimeException(EX_PREFIX + "Unable to load data with a null primary key. (object=" + clazz.getName() + ")");
 		}
 		
 		final StringBuilder selectSql = new StringBuilder();

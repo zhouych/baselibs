@@ -3,9 +3,11 @@ package com.zyc.baselibs.dao;
 import java.lang.reflect.Field;
 import java.sql.JDBCType;
 
+import com.zyc.baselibs.annotation.DatabaseTable;
 import com.zyc.baselibs.annotation.DatabaseUtils;
 import com.zyc.baselibs.commons.ReflectUtils;
 import com.zyc.baselibs.commons.StringUtils;
+import com.zyc.baselibs.entities.EntityCopyable;
 
 public class SqlScriptProviderSupport {
 	
@@ -18,6 +20,8 @@ public class SqlScriptProviderSupport {
 	public static final String PARAM_KEY_ID = "id";
 
 	public static final String PARAM_KEY_CLASS = "clazz";
+	
+	public static final String PARAM_KEY_FIELD2VALUES = "field2values";
 	
 	protected static final String PK = "pk";
 	
@@ -40,6 +44,25 @@ public class SqlScriptProviderSupport {
 		} else {
 			return true;
 		}
+	}
+
+	private static final String EX_ENTITY_MAPPED_TABLE = "This entity cannot be mapped to a database table. (entity=%s)";
+	
+	public Object convertToDatabaseEntity(Object entity) {
+		if(entity.getClass().isAnnotationPresent(DatabaseTable.class)) {
+			return entity;
+		} else if(entity instanceof EntityCopyable) {
+			return ((EntityCopyable<?>) entity).copyEntity();
+		}
+		throw new RuntimeException(String.format(EX_ENTITY_MAPPED_TABLE, entity.getClass().getName())); 
+	}
+	
+	public String getTableName(Class<?> clazz) {
+		String table = DatabaseUtils.getTableName(clazz);
+		if(StringUtils.isBlank(table)) {
+			throw new RuntimeException(String.format(EX_ENTITY_MAPPED_TABLE, clazz.getName())); 
+		}
+		return table;
 	}
 	
 	public static String genMybatisParamPlaceholder(Field field) {

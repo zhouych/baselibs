@@ -1,6 +1,7 @@
 package com.zyc.baselibs.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.InsertProvider;
@@ -27,6 +28,9 @@ public interface MybatisBaseMapper<T extends BaseEntity> {
 	
 	@SelectProvider(type = SqlScriptCommander.class, method = "select")
 	List<T> select(T entity);
+
+	@SelectProvider(type = SqlScriptCommander.class, method = "whereIn")
+	List<T> whereIn(@Param(SqlScriptProviderSupport.PARAM_KEY_FIELD2VALUES) Map<String, Object> field2values, @Param(SqlScriptProviderSupport.PARAM_KEY_CLASS) Class<T> clazz);
 	
 	@SelectProvider(type = SqlScriptCommander.class, method = "selectSupportKeyword")
 	List<T> selectSupportKeyword(@Param(SqlScriptProviderSupport.PARAM_KEY_ENTITY) T entity, @Param(SqlScriptProviderSupport.PARAM_KEY_KEYWORD) String keyword);
@@ -38,6 +42,6 @@ public interface MybatisBaseMapper<T extends BaseEntity> {
 	List<T> selectByPageSupportKeyword(@Param(SqlScriptProviderSupport.PARAM_KEY_ENTITY) T entity, @Param(SqlScriptProviderSupport.PARAM_KEY_KEYWORD) String keyword, @Param(SqlScriptProviderSupport.PARAM_KEY_PAGINATION) Pagination pagination);
 	
 	@SelectProvider(type = SqlScriptCommander.class, method = "selectTotalCountSupportKeyword")
-	List<T> selectTotalCountSupportKeyword(@Param(SqlScriptProviderSupport.PARAM_KEY_ENTITY) T entity, @Param(SqlScriptProviderSupport.PARAM_KEY_KEYWORD) String keyword, @Param(SqlScriptProviderSupport.PARAM_KEY_PAGINATION) Pagination pagination);
+	int selectTotalCountSupportKeyword(@Param(SqlScriptProviderSupport.PARAM_KEY_ENTITY) T entity, @Param(SqlScriptProviderSupport.PARAM_KEY_KEYWORD) String keyword, @Param(SqlScriptProviderSupport.PARAM_KEY_PAGINATION) Pagination pagination);
 	
 }

@@ -47,7 +47,7 @@ public class OverallVerificationRuler implements VerificationRuler {
 					FieldRule ef = field.getAnnotation(FieldRule.class);
 					if(ef.required()) {
 						if(value == null || StringUtils.isBlank(value.toString())) {
-							message.append(String.format(FORMAT_EX_NULLOREMPTY, obj.getClass().getName(), field.getName(), field.getName(), String.valueOf(value)));
+							message.append(String.format(FORMAT_EX_NULLOREMPTY, field.getName(), obj.getClass().getName(), field.getName(), String.valueOf(value)));
 							return true;
 						}
 					}
@@ -57,7 +57,7 @@ public class OverallVerificationRuler implements VerificationRuler {
 					EnumMapping em = field.getAnnotation(EnumMapping.class);
 					boolean invalidValue = EnumMappingUtils.invalidEnumValue(value, em.enumClazz());
 					if(invalidValue) {
-						message.append(String.format(FORMAT_EX_INVALID, obj.getClass().getName(), field.getName(), field.getName(), String.valueOf(value)));
+						message.append(String.format(FORMAT_EX_INVALID, field.getName(), obj.getClass().getName(), field.getName(), String.valueOf(value)));
 						return true;
 					}
 				}

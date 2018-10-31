@@ -30,7 +30,7 @@ public class SqlScriptProviderForKeywordSelect extends SqlScriptProviderSupport 
 	@SuppressWarnings("unchecked")
 	public String generateSql(Object obj) {
 		Map<String, Object> param = (Map<String, Object>) obj;
-		final Object entity = param.get(PARAM_KEY_ENTITY);
+		final Object entity = this.convertToDatabaseEntity(param.get(PARAM_KEY_ENTITY));
 		final String keyword = (String) param.get(PARAM_KEY_KEYWORD);
 		boolean onlyTotalCount = this.isOnlyTotalCount(param);
 		Class<?> clazz = entity.getClass();

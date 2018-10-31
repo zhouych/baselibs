@@ -32,9 +32,12 @@ public final class SqlScriptCommander {
 		return SqlScriptProviderFactory.getInstance(databaseType, SqlAction.KEYWORDSELECTTOTALCOUNT, null).generateSql(param);
 	}
 	
-	
 	public String select(final Object entity) {
 		return SqlScriptProviderFactory.getInstance(databaseType, SqlAction.SELECT, null).generateSql(entity);
+	}
+	
+	public String whereIn(final Object param) {
+		return SqlScriptProviderFactory.getInstance(databaseType, SqlAction.WHEREIN, null).generateSql(param);
 	}
 	
 	public String selectSupportKeyword(Map<String, Object> param) {

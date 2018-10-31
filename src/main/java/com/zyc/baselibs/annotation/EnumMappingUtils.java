@@ -51,7 +51,7 @@ public class EnumMappingUtils {
 			return true;
 		} else {
 			try {
-				Enum.valueOf(clazz, String.valueOf(value));
+				Enum.valueOf(clazz, String.valueOf(value).toUpperCase());
 				return false;
 			} catch (Exception e) {
 				logger.warn("[EnumMappingUtils.verifyEnumField()] - " +  e.getMessage());
