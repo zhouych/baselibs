@@ -4,7 +4,7 @@ import com.zyc.baselibs.dao.MybatisBaseMapper;
 import com.zyc.baselibs.entities.BaseEntity;
 import com.zyc.baselibs.ex.BussinessException;
 
-public abstract class AbstractBaseService {
+public abstract class AbstractBaseService extends AbstractEntityDeleteService {
 	
 	protected static final String ACTION_UPDATE = "update";
 	

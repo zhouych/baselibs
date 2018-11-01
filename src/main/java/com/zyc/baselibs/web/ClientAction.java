@@ -1,6 +1,7 @@
 package com.zyc.baselibs.web;
 
 public enum ClientAction {
+	VIEW("view", "查看"),
 	ADD("add", "新增"),
 	EDIT("edit", "编辑");
 	
