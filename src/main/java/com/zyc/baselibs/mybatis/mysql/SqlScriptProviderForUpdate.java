@@ -17,12 +17,9 @@ public class SqlScriptProviderForUpdate extends SqlScriptProviderSupport impleme
 	
 	private static final Logger logger = Logger.getLogger(SqlScriptProviderForUpdate.class); 
 
-	private static final String EX_PREFIX = "[SqlScriptProviderForUpdate.generateSql(...)] - "; 
-
 	public String generateSql(final Object entity) {
 		Class<?> clazz = entity.getClass();
-		final String table = DatabaseUtils.getTableName(clazz);
-		final StringBuilder builder = new StringBuilder("update ").append(table).append(" set ");
+		final StringBuilder builder = new StringBuilder("update ").append(this.getTableName(clazz)).append(" set ");
 		int before = builder.length();
 		final Map<String, Object> container = new HashMap<String, Object>();
 		
@@ -47,12 +44,12 @@ public class SqlScriptProviderForUpdate extends SqlScriptProviderSupport impleme
 		if(builder.length() > before) {
 			builder.delete(builder.length() - 1, builder.length());
 		} else {
-			throw new RuntimeException(EX_PREFIX + "Cannot find the field to be updated. (object=" + clazz.getName() + ")");
+			throw new RuntimeException(EX_METHOD_GENERATESQL + "Cannot find the field to be updated. (object=" + clazz.getName() + ")");
 		}
 		
 		Field pk = (Field) container.get(PK);
 		if(null == pk) {
-			throw new RuntimeException(EX_PREFIX + "The primary key of the object could not be found. (object=" + clazz.getName() + ")");
+			throw new RuntimeException(EX_METHOD_GENERATESQL + "The primary key of the object could not be found. (object=" + clazz.getName() + ")");
 		}
 		
 		//更新必须条件之一：主键匹配
@@ -65,7 +62,7 @@ public class SqlScriptProviderForUpdate extends SqlScriptProviderSupport impleme
 		}
 		
 		String sql = builder.toString();
-		logger.debug(EX_PREFIX + sql);
+		logger.debug(EX_METHOD_GENERATESQL + sql);
 		return sql;
 	}
 }

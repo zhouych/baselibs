@@ -14,8 +14,6 @@ import com.zyc.baselibs.dao.SqlScriptProviderSupport;
 public class SqlScriptProviderForSelect extends SqlScriptProviderSupport implements SqlScriptProvider {
 
 	private static final Logger logger = Logger.getLogger(SqlScriptProviderForSelect.class);
-
-	private static final String EX_PREFIX = "[SqlScriptProviderForSelect.generateSql(...)] - ";
 	
 	public String generateSql(final Object entity) {
 		Class<?> clazz = entity.getClass();
@@ -34,7 +32,7 @@ public class SqlScriptProviderForSelect extends SqlScriptProviderSupport impleme
 		}, false, new int[] { Modifier.STATIC, Modifier.FINAL });
 		
 		String sql = selectSql.toString();
-		logger.debug(EX_PREFIX + sql);
+		logger.debug(EX_METHOD_GENERATESQL + sql);
 		return sql;
 	}
 

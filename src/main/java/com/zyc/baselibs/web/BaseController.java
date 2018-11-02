@@ -1,5 +1,8 @@
 package com.zyc.baselibs.web;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -41,11 +44,43 @@ public abstract class BaseController {
     	
     	HttpServletRequest request = this.getRequest();
     	if(request != null) {
-    		String returnUrl = request.getParameter("returnUrl");
+    		String returnUrl = this.getParamReturnUrl();
     		model.addAttribute("returnUrl", StringUtils.isBlank(returnUrl) ? this.getDetailReturnUrlDefaults() : returnUrl); //记录上一次url，以便返回
     	}
     	
     	return this.getCommonPath() + "/detail";
+    }
+    
+    protected String getParamReturnUrl() {
+    	return this.getRequest().getParameter("returnUrl");
+    }
+
+    /**
+     * 获取详情ViewResolver的url（格式："commonPath/detail?xxxxxx"）
+     * @return
+     */
+    protected String getDetailViewUrl() {
+    	return this.getCommonPath() + "/detail"+ this.getRequestParamUrl();
+    }
+    
+    /**
+     * 获取重定向到编辑页的url（格式："redirect:commonPath/editpage/entityId?xxxxxx"）
+     * @param entityId 实体id
+     * @return
+     */
+    protected String getRedirectEditpageUrl(String entityId) {
+    	return "redirect:" + this.getCommonPath() + "/editpage/" + entityId + this.getRequestParamUrl();
+    }
+    
+    protected String getRequestParamUrl() {
+    	List<String> params = new ArrayList<String>();
+    	
+    	String returnUrl = this.getParamReturnUrl();
+    	if(StringUtils.isNotBlank(returnUrl)) {
+        	params.add("returnUrl=" + returnUrl);
+    	}
+    	
+    	return params.isEmpty() ? STRING_EMPTY : ("?" + String.join("&", params));
     }
     
     /**

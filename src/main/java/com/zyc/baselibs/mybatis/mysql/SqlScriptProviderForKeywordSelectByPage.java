@@ -13,16 +13,13 @@ public class SqlScriptProviderForKeywordSelectByPage extends SqlScriptProviderFo
 
 	private static final Logger logger = Logger.getLogger(SqlScriptProviderForKeywordSelectByPage.class);
 
-	private static final String EX_PREFIX_PAGINATION = "[SqlScriptProviderForKeywordSelectByPage.generateSql(...)] - ";
-
 	@SuppressWarnings("unchecked")
 	public String generateSql(Object obj) {
 		Map<String, Object> param = (Map<String, Object>) obj;
-		Object entity = param.get(PARAM_KEY_ENTITY);
-		Pagination pagination = (Pagination) param.get(PARAM_KEY_PAGINATION);
+		Object entity = param.get(PKEY_ENTITY);
+		Pagination pagination = (Pagination) param.get(PKEY_PAGINATION);
 		
 		StringBuilder selectSql = new StringBuilder(super.generateSql(obj));
-		
 		//根据传入的排序字段进行排序，如果排序字段没有值则认为是业务上不需要可以排序，采用数据库层面的默认排序即可。
 		if(StringUtils.isNotBlank(pagination.getOrder())) {
 			String column = DatabaseUtils.getColumnName(ReflectUtils.getField(pagination.getOrder(), entity.getClass()), true);
@@ -33,7 +30,7 @@ public class SqlScriptProviderForKeywordSelectByPage extends SqlScriptProviderFo
 		selectSql.append(" limit ").append(pagination.getStartIndex() - 1).append(",").append(pagination.getPageRowCount());
 
 		String sql = selectSql.toString();
-		logger.debug(EX_PREFIX_PAGINATION + sql);
+		logger.debug(EX_METHOD_GENERATESQL + sql);
 		return sql;
 	}
 }

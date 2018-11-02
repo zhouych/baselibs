@@ -18,8 +18,6 @@ import com.zyc.baselibs.dao.SqlScriptProviderSupport;
 public class SqlScriptProviderForWhereIn extends SqlScriptProviderSupport implements SqlScriptProvider {
 
 	private static final Logger logger = Logger.getLogger(SqlScriptProviderForWhereIn.class);
-
-	private static final String EX_PREFIX = "[generateSql(...)] - ";
 	
 	/*
 	private static final String FORMAT_FOREACH = 
@@ -34,8 +32,8 @@ public class SqlScriptProviderForWhereIn extends SqlScriptProviderSupport implem
 	@SuppressWarnings("unchecked")
 	public String generateSql(final Object obj) {
 		Map<String, Object> param = (Map<String, Object>) obj;
-		Map<String, Object> field2values = (Map<String, Object>) param.get(PARAM_KEY_FIELD2VALUES);
-		Class<?> clazz = (Class<?>) param.get(PARAM_KEY_CLASS);
+		Map<String, Object> field2values = (Map<String, Object>) param.get(PKEY_FIELD2VALUES);
+		Class<?> clazz = (Class<?>) param.get(PKEY_CLASS);
 		String table = this.getTableName(clazz);
 		final StringBuilder selectSql = new StringBuilder("select * from " + table + " where 1=1");
 
@@ -83,7 +81,7 @@ public class SqlScriptProviderForWhereIn extends SqlScriptProviderSupport implem
 		}
 
 		String sql = selectSql.toString();
-		logger.debug(EX_PREFIX + sql);
+		logger.debug(EX_METHOD_GENERATESQL + sql);
 		return sql;
 	}
 	
@@ -91,7 +89,7 @@ public class SqlScriptProviderForWhereIn extends SqlScriptProviderSupport implem
 	private void appendSqlWhereCondition(StringBuilder selectSql, String fieldName, Object values, Field field) {
 		JDBCType jdbcType = DatabaseUtils.getJdbcType(field);
 		String jdbcTypeValue = jdbcType == null ? "" : (",jdbcType=" + jdbcType.name());
-		String paramKey = PARAM_KEY_FIELD2VALUES + "." + fieldName;
+		String paramKey = PKEY_FIELD2VALUES + "." + fieldName;
 		
 		boolean flag1 = Collection.class.isAssignableFrom(values.getClass());
 		boolean flag2 = values.getClass().isArray();

@@ -15,8 +15,6 @@ public class SqlScriptProviderForInsert extends SqlScriptProviderSupport impleme
 	
 	private static final Logger logger = Logger.getLogger(SqlScriptProviderForInsert.class);
 
-	private static final String EX_PREFIX = "[SqlScriptProviderForInsert.generateSql(...)] - ";
-
 	public String generateSql(final Object entity) {
 		Class<?> clazz = entity.getClass();
 		final StringBuilder columnSql = new StringBuilder();
@@ -29,7 +27,7 @@ public class SqlScriptProviderForInsert extends SqlScriptProviderSupport impleme
 				try {
 					value = field.get(entity);
 				} catch (Exception e) {
-					throw new RuntimeException(EX_PREFIX + e.getMessage(), e);
+					throw new RuntimeException(EX_METHOD_GENERATESQL + e.getMessage(), e);
 				}
 				
 				if(null != value) {
@@ -45,12 +43,11 @@ public class SqlScriptProviderForInsert extends SqlScriptProviderSupport impleme
 			columnSql.delete(columnSql.length() - 1, columnSql.length());
 			valueParamSql.delete(valueParamSql.length() - 1, valueParamSql.length());
 		} else {
-			throw new RuntimeException(EX_PREFIX + "Cannot find the field to be inserted. (object=" + clazz.getName() + ")");
+			throw new RuntimeException(EX_METHOD_GENERATESQL + "Cannot find the field to be inserted. (object=" + clazz.getName() + ")");
 		}
 
-		String table = DatabaseUtils.getTableName(clazz);
-		String sql = String.format("insert into %s(%s) values(%s)", table, columnSql.toString(), valueParamSql.toString());
-		logger.debug(EX_PREFIX + sql);
+		String sql = String.format("insert into %s(%s) values(%s)", this.getTableName(clazz), columnSql.toString(), valueParamSql.toString());
+		logger.debug(EX_METHOD_GENERATESQL + sql);
 		return sql;
 	}
 }

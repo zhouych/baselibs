@@ -19,29 +19,31 @@ public interface MybatisBaseMapper<T extends BaseEntity> {
 	
 	@DeleteProvider(type = SqlScriptCommander.class, method = "delete")
 	int delete(T entity) throws Exception;
+	
+	int deleteById(@Param(SqlScriptProviderSupport.PKEY_ID) String id, @Param(SqlScriptProviderSupport.PKEY_VERSION) int version, @Param(SqlScriptProviderSupport.PKEY_CLASS) Class<T> clazz);
 
 	@UpdateProvider(type = SqlScriptCommander.class, method = "update")
 	int update(T entity) throws Exception;
 	
 	@SelectProvider(type = SqlScriptCommander.class, method = "load")
-	T load(@Param(SqlScriptProviderSupport.PARAM_KEY_ID) String id, @Param(SqlScriptProviderSupport.PARAM_KEY_CLASS) Class<T> clazz);
+	T load(@Param(SqlScriptProviderSupport.PKEY_ID) String id, @Param(SqlScriptProviderSupport.PKEY_CLASS) Class<T> clazz);
 	
 	@SelectProvider(type = SqlScriptCommander.class, method = "select")
 	List<T> select(T entity);
 
 	@SelectProvider(type = SqlScriptCommander.class, method = "whereIn")
-	List<T> whereIn(@Param(SqlScriptProviderSupport.PARAM_KEY_FIELD2VALUES) Map<String, Object> field2values, @Param(SqlScriptProviderSupport.PARAM_KEY_CLASS) Class<T> clazz);
+	List<T> whereIn(@Param(SqlScriptProviderSupport.PKEY_FIELD2VALUES) Map<String, Object> field2values, @Param(SqlScriptProviderSupport.PKEY_CLASS) Class<T> clazz);
 	
 	@SelectProvider(type = SqlScriptCommander.class, method = "selectSupportKeyword")
-	List<T> selectSupportKeyword(@Param(SqlScriptProviderSupport.PARAM_KEY_ENTITY) T entity, @Param(SqlScriptProviderSupport.PARAM_KEY_KEYWORD) String keyword);
+	List<T> selectSupportKeyword(@Param(SqlScriptProviderSupport.PKEY_ENTITY) T entity, @Param(SqlScriptProviderSupport.PKEY_KEYWORD) String keyword);
 
 	@SelectProvider(type = SqlScriptCommander.class, method = "selectByPage")
-	List<T> selectByPage(@Param(SqlScriptProviderSupport.PARAM_KEY_ENTITY) T entity, @Param(SqlScriptProviderSupport.PARAM_KEY_PAGINATION) Pagination pagination);
+	List<T> selectByPage(@Param(SqlScriptProviderSupport.PKEY_ENTITY) T entity, @Param(SqlScriptProviderSupport.PKEY_PAGINATION) Pagination pagination);
 	
 	@SelectProvider(type = SqlScriptCommander.class, method = "selectByPageSupportKeyword")
-	List<T> selectByPageSupportKeyword(@Param(SqlScriptProviderSupport.PARAM_KEY_ENTITY) T entity, @Param(SqlScriptProviderSupport.PARAM_KEY_KEYWORD) String keyword, @Param(SqlScriptProviderSupport.PARAM_KEY_PAGINATION) Pagination pagination);
+	List<T> selectByPageSupportKeyword(@Param(SqlScriptProviderSupport.PKEY_ENTITY) T entity, @Param(SqlScriptProviderSupport.PKEY_KEYWORD) String keyword, @Param(SqlScriptProviderSupport.PKEY_PAGINATION) Pagination pagination);
 	
 	@SelectProvider(type = SqlScriptCommander.class, method = "selectTotalCountSupportKeyword")
-	int selectTotalCountSupportKeyword(@Param(SqlScriptProviderSupport.PARAM_KEY_ENTITY) T entity, @Param(SqlScriptProviderSupport.PARAM_KEY_KEYWORD) String keyword, @Param(SqlScriptProviderSupport.PARAM_KEY_PAGINATION) Pagination pagination);
+	int selectTotalCountSupportKeyword(@Param(SqlScriptProviderSupport.PKEY_ENTITY) T entity, @Param(SqlScriptProviderSupport.PKEY_KEYWORD) String keyword, @Param(SqlScriptProviderSupport.PKEY_PAGINATION) Pagination pagination);
 	
 }

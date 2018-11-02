@@ -18,8 +18,6 @@ public class SqlScriptProviderForKeywordSelect extends SqlScriptProviderSupport 
 
 	private static final Logger logger = Logger.getLogger(SqlScriptProviderForKeywordSelect.class);
 
-	private static final String EX_PREFIX = "[SqlScriptProviderForKeywordSelect.generateSql(...)] - ";
-
 	public static final String PARAM_KEY_ONLY_TOTALCOUNT = "onlyTotalCount";
 	
 	protected boolean isOnlyTotalCount(Map<String, Object> param) {
@@ -30,12 +28,11 @@ public class SqlScriptProviderForKeywordSelect extends SqlScriptProviderSupport 
 	@SuppressWarnings("unchecked")
 	public String generateSql(Object obj) {
 		Map<String, Object> param = (Map<String, Object>) obj;
-		final Object entity = this.convertToDatabaseEntity(param.get(PARAM_KEY_ENTITY));
-		final String keyword = (String) param.get(PARAM_KEY_KEYWORD);
+		final Object entity = this.convertToDatabaseEntity(param.get(PKEY_ENTITY));
+		final String keyword = (String) param.get(PKEY_KEYWORD);
 		boolean onlyTotalCount = this.isOnlyTotalCount(param);
 		Class<?> clazz = entity.getClass();
-		String table = DatabaseUtils.getTableName(clazz);
-		final StringBuilder selectSql = new StringBuilder("select " + (onlyTotalCount ? "count(1)" : "*") + " from " + table + " where 1=1 ");
+		final StringBuilder selectSql = new StringBuilder("select " + (onlyTotalCount ? "count(1)" : "*") + " from " + this.getTableName(clazz) + " where 1=1 ");
 		final StringBuilder keywordMatchSql = new StringBuilder();
 		
 		//业务逻辑：支持全字段作为条件进行查询，没有条件（实体对象中所有字段都没有值）则查询全表数据
@@ -52,11 +49,11 @@ public class SqlScriptProviderForKeywordSelect extends SqlScriptProviderSupport 
 		}, false, new int[] { Modifier.STATIC, Modifier.FINAL });
 		
 		if(keywordMatchSql.length() > 0) {
-			selectSql.append("and (1=2").append(keywordMatchSql).append(")");
+			selectSql.append(" and (1=2").append(keywordMatchSql).append(")");
 		}
 		
 		if(logger.isDebugEnabled()) {
-			logger.debug(EX_PREFIX + selectSql.toString());
+			logger.debug(EX_METHOD_GENERATESQL + selectSql.toString());
 		}
 		
 		return selectSql.toString();
@@ -68,7 +65,7 @@ public class SqlScriptProviderForKeywordSelect extends SqlScriptProviderSupport 
 
 	protected void appendSqlWhereKeywordMatch(final StringBuilder keywordMatchSql, Field field) {
 		if(this.supportKeyword(field)) {
-			keywordMatchSql.append(" or ").append(DatabaseUtils.getColumnName(field, true)).append(" like concat('%',#{").append(PARAM_KEY_KEYWORD).append("},'%')");
+			keywordMatchSql.append(" or ").append(DatabaseUtils.getColumnName(field, true)).append(" like concat('%',#{").append(PKEY_KEYWORD).append("},'%')");
 		}
 	}
 	

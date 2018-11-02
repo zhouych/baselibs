@@ -13,13 +13,11 @@ public class SqlScriptProviderForSelectByPage extends SqlScriptProviderForSelect
 
 	private static final Logger logger = Logger.getLogger(SqlScriptProviderForSelectByPage.class);
 
-	private static final String EX_PREFIX_PAGINATION = "[SqlScriptProviderForSelectByPage.generateSql(...)] - ";
-
 	@SuppressWarnings("unchecked")
 	public String generateSql(Object obj) {
 		Map<String, Object> param = (Map<String, Object>) obj;
-		Object entity = param.get(PARAM_KEY_ENTITY);
-		Pagination pagination = (Pagination) param.get(PARAM_KEY_PAGINATION);
+		Object entity = param.get(PKEY_ENTITY);
+		Pagination pagination = (Pagination) param.get(PKEY_PAGINATION);
 		
 		StringBuilder selectSql = new StringBuilder(super.generateSql(entity));
 		
@@ -33,7 +31,7 @@ public class SqlScriptProviderForSelectByPage extends SqlScriptProviderForSelect
 		selectSql.append(" limit ").append(pagination.getStartIndex()).append(",").append(pagination.getPageRowCount());
 
 		String sql = selectSql.toString();
-		logger.debug(EX_PREFIX_PAGINATION + sql);
+		logger.debug(EX_METHOD_GENERATESQL + sql);
 		return sql;
 	}
 }

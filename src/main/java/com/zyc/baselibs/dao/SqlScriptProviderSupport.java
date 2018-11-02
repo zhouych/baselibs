@@ -11,17 +11,21 @@ import com.zyc.baselibs.entities.EntityCopyable;
 
 public class SqlScriptProviderSupport {
 	
-	public static final String PARAM_KEY_ENTITY = "entity";
+	protected static final String EX_METHOD_GENERATESQL = "[generateSql(...)] - ";
 	
-	public static final String PARAM_KEY_KEYWORD = "keyword";
+	public static final String PKEY_ENTITY = "entity";
 	
-	public static final String PARAM_KEY_PAGINATION = "pagination";
+	public static final String PKEY_KEYWORD = "keyword";
 	
-	public static final String PARAM_KEY_ID = "id";
+	public static final String PKEY_PAGINATION = "pagination";
+	
+	public static final String PKEY_ID = "id";
 
-	public static final String PARAM_KEY_CLASS = "clazz";
+	public static final String PKEY_VERSION = "version";
+
+	public static final String PKEY_CLASS = "clazz";
 	
-	public static final String PARAM_KEY_FIELD2VALUES = "field2values";
+	public static final String PKEY_FIELD2VALUES = "field2values";
 	
 	protected static final String PK = "pk";
 	

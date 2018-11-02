@@ -16,6 +16,10 @@ public final class SqlScriptCommander {
 		return SqlScriptProviderFactory.getInstance(databaseType, SqlAction.DELETE, null).generateSql(entity);
 	}
 	
+	public String deleteById(Map<String, Object> param) {
+		return SqlScriptProviderFactory.getInstance(databaseType, SqlAction.DELETEBYID, null).generateSql(param);
+	}
+	
 	public String update(final Object entity) {
 		return SqlScriptProviderFactory.getInstance(databaseType, SqlAction.UPDATE, null).generateSql(entity);
 	}

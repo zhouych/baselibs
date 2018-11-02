@@ -3,6 +3,7 @@ package com.zyc.baselibs.dao;
 public enum SqlAction {
 	INSERT("Insert"),
 	DELETE("Delete"),
+	DELETEBYID("DeleteById"),
 	UPDATE("Update"),
 	SELECT("Select"),
 	WHEREIN("WhereIn"),
