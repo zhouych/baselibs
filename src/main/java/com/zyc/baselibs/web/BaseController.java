@@ -56,11 +56,19 @@ public abstract class BaseController {
     }
 
     /**
-     * 获取详情ViewResolver的url（格式："commonPath/detail?xxxxxx"）
+     * 获取索引（列表）页ViewResolver的url（格式："commonPath/index"）
      * @return
      */
-    protected String getDetailViewUrl() {
-    	return this.getCommonPath() + "/detail"+ this.getRequestParamUrl();
+    protected String getIndexUrl() {
+    	return this.getCommonPath() + "/index";
+    }
+    
+    /**
+     * 获取详情ViewResolver的url（格式："commonPath/detail"）
+     * @return
+     */
+    protected String getDetailUrl() {
+    	return this.getCommonPath() + "/detail";
     }
     
     /**

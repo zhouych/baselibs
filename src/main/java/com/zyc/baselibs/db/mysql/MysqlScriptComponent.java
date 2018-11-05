@@ -70,4 +70,25 @@ public class MysqlScriptComponent {
 		
 		return tableSqlScripts;
 	}
+	
+	public String formatInsertSqlScripts(Class<?> clazz) {
+		String table = DatabaseUtils.getTableName(clazz);
+		if(StringUtils.isBlank(table)) {
+			return null;
+		}
+
+		final List<String> columns = new ArrayList<String>();
+		ReflectUtils.scanFields(clazz, new Visitor<Field, Boolean>() {
+			public Boolean visit(Field field) {
+				columns.add(DatabaseUtils.getColumnName(field, true));
+				return false;
+			}
+		}, false, ReflectUtils.MODIFIER_STATIC$FINAL);
+		
+		if(!columns.isEmpty()) {
+			return "insert into " + table + "(" + String.join(",", columns) + ") values(@" + String.join("@", columns) + ")";
+		}
+		
+		return null;
+	}
 }
