@@ -108,6 +108,7 @@ public class DatabaseUtils {
 		jdbcType2mysqlDbType.put(JDBCType.NUMERIC, "LONGBLOB");
 		jdbcType2mysqlDbType.put(JDBCType.FLOAT, "FLOAT");
 		jdbcType2mysqlDbType.put(JDBCType.DOUBLE, "DOUBLE");
+		jdbcType2mysqlDbType.put(JDBCType.DECIMAL, "DECIMAL(18,6)");
 		jdbcType2mysqlDbType.put(JDBCType.VARCHAR, "VARCHAR");
 		jdbcType2mysqlDbType.put(JDBCType.NVARCHAR, "NVARCHAR");
 		jdbcType2mysqlDbType.put(JDBCType.TIMESTAMP, "TIMESTAMP");

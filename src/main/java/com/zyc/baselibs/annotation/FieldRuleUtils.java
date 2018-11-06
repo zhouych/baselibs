@@ -19,7 +19,16 @@ public class FieldRuleUtils {
 		AnnotationUtils.scanFieldAnnotation(target, FieldRule.class, visitor, enabledBreak);
 	}
 	
-	public static <T extends Object> String[] uneditableFields(T o) throws IllegalEditedException {
+	public static FieldRule get(Field field) {
+		return field.isAnnotationPresent(FieldRule.class) ? field.getAnnotation(FieldRule.class) : null;
+	}
+
+	public static boolean externalUneditable(Field field) {
+		FieldRule fr = get(field);
+		return fr != null && fr.externalUneditable();
+	}
+	
+	public static <T extends Object> String[] externalUneditableFields(T o) throws IllegalEditedException {
 		final List<String> uneditableFields = new ArrayList<String>();
 		
 		FieldRuleUtils.eachEntityField(o, new Visitor<Field, Boolean>() {

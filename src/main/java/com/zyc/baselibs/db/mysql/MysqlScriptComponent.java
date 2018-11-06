@@ -24,6 +24,8 @@ public class MysqlScriptComponent {
 	
 	private static final String FORMAT_COLUMN_DEFINITION = "  `%s` %s %s %s";
 	
+	private static final String FORMAT_PK_DEFINITION = "  PRIMARY KEY (`%s`)";
+	
 	/**
 	 * 得到指定包下所有orm数据实体的建表sql脚本
 	 * @param entityPackageName orm实体的包名
@@ -52,11 +54,15 @@ public class MysqlScriptComponent {
 					ReflectUtils.scanFields(clazz, new Visitor<Field, Boolean>() {
 						public Boolean visit(Field field) {
 							String column = DatabaseUtils.getColumnName(field, true);
+							boolean pk = DatabaseUtils.isPrimaryKey(field);
 							String dbType = DatabaseUtils.getMysqlDbType(field);
-							boolean nullable = DatabaseUtils.getNullable(field);
+							boolean nullable = !pk && DatabaseUtils.getNullable(field);
 							String nullPart = nullable ? "NULL" : "NOT NULL";
 							String defaulPart = nullable ? "DEFAULT NULL" : "";
-							columns.add("id".equals(column) ? 0 : columns.size(), String.format(FORMAT_COLUMN_DEFINITION, column, dbType, nullPart, defaulPart));
+							columns.add(pk ? 0 : columns.size(), String.format(FORMAT_COLUMN_DEFINITION, column, dbType, nullPart, defaulPart));
+							if(pk) {
+								columns.add(1, String.format(FORMAT_PK_DEFINITION, column));
+							}
 							return false;
 						}
 					}, false, ReflectUtils.MODIFIER_STATIC$FINAL);
@@ -86,7 +92,7 @@ public class MysqlScriptComponent {
 		}, false, ReflectUtils.MODIFIER_STATIC$FINAL);
 		
 		if(!columns.isEmpty()) {
-			return "insert into " + table + "(" + String.join(",", columns) + ") values(@" + String.join("@", columns) + ")";
+			return "insert into " + table + "(" + String.join(",", columns) + ") values(@" + String.join(",@", columns) + ")";
 		}
 		
 		return null;

@@ -48,7 +48,7 @@ public class FieldRuleUtilsTest {
 		EF ef = new EF();
 		
 		try {
-			fields = FieldRuleUtils.uneditableFields(ef);
+			fields = FieldRuleUtils.externalUneditableFields(ef);
 		} catch (Exception e) {
 			assertEquals(e instanceof IllegalEditedException || e instanceof RuntimeException, true);
 		}
