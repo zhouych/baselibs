@@ -34,7 +34,7 @@ public class SqlScriptProviderForUpdate extends SqlScriptProviderSupport impleme
 						container.put(VERSION, field);
 					}
 					String columnName = DatabaseUtils.getColumnName(field, true);
-					builder.append(columnName).append("=").append(genMybatisParamPlaceholder(field)).append(",");
+					builder.append(columnName).append("=").append(genMybatisParamPlaceholder(field, null)).append(",");
 				}
 				return false;
 			}

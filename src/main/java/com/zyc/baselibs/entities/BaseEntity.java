@@ -5,11 +5,11 @@ import java.util.Date;
 import java.util.UUID;
 
 import com.zyc.baselibs.annotation.DatabaseColumn;
+import com.zyc.baselibs.annotation.EnumMapping;
 import com.zyc.baselibs.annotation.FieldRule;
 import com.zyc.baselibs.commons.StringUtils;
-import com.zyc.baselibs.annotation.EnumMapping;
 
-public abstract class BaseEntity {
+public abstract class BaseEntity implements BaseEntityLabelable {
 	
 	@FieldRule(required = true, externalUneditable = true)
 	@DatabaseColumn(pk = true, jdbcType = JDBCType.VARCHAR, jdbcTypeVarcharLength = 36)
@@ -99,5 +99,17 @@ public abstract class BaseEntity {
 		if(StringUtils.isBlank(this.getId())) {
 			this.setId(UUID.randomUUID().toString());
 		}
+	}
+	
+	public String getDatastatuslabel() {
+		return this.getDatastatus() == null ? null : Enum.valueOf(DataStatus.class, this.getDatastatus().toUpperCase()).getText();
+	}
+	
+	public String getCreatedatlabel() {
+		return StringUtils.fromDate(this.getCreatedat());
+	}
+	
+	public String getUpdatedatlabel() {
+		return StringUtils.fromDate(this.getUpdatedat());
 	}
 }

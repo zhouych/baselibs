@@ -24,7 +24,7 @@ public class SqlScriptProviderForDelete extends SqlScriptProviderSupport impleme
 		ReflectUtils.scanFields(clazz, new Visitor<Field, Boolean>() {
 			public Boolean visit(Field field) {
 				if(validValue(field, entity)) {
-					deleteSql.append(" and ").append(DatabaseUtils.getColumnName(field, true)).append("=").append(genMybatisParamPlaceholder(field));
+					deleteSql.append(" and ").append(DatabaseUtils.getColumnName(field, true)).append("=").append(genMybatisParamPlaceholder(field, null));
 				}
 				return false;
 			}

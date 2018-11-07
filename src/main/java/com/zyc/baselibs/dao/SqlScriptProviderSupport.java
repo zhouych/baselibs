@@ -69,12 +69,13 @@ public class SqlScriptProviderSupport {
 		return table;
 	}
 	
-	public static String genMybatisParamPlaceholder(Field field) {
+	public static String genMybatisParamPlaceholder(Field field, String paramVarName) {
+		paramVarName = StringUtils.isBlank(paramVarName) ? "" : (paramVarName + ".");
 		JDBCType jdbcType = DatabaseUtils.getJdbcType(field);
 		if(jdbcType == null) {
-			return "#{" + field.getName() + "}";
+			return "#{" + paramVarName + field.getName() + "}";
 		} else {
-			return String.format("#{%s,jdbcType=%s}", field.getName(), jdbcType.name());
+			return String.format("#{%s%s,jdbcType=%s}", paramVarName, field.getName(), jdbcType.name());
 		}
 	}
 }

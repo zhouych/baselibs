@@ -32,7 +32,7 @@ public class SqlScriptProviderForInsert extends SqlScriptProviderSupport impleme
 				
 				if(null != value) {
 					columnSql.append(DatabaseUtils.getColumnName(field, true)).append(",");
-					valueParamSql.append(genMybatisParamPlaceholder(field)).append(",");
+					valueParamSql.append(genMybatisParamPlaceholder(field, null)).append(",");
 				}
 				return false;
 			}

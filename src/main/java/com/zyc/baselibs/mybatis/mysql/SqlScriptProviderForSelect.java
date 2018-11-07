@@ -37,7 +37,7 @@ public class SqlScriptProviderForSelect extends SqlScriptProviderSupport impleme
 	}
 
 	private void appendSqlWhereConditon(final StringBuilder targetSql, Field field) {
-		targetSql.append(" and ").append(DatabaseUtils.getColumnName(field, true)).append("=").append(genMybatisParamPlaceholder(field));
+		targetSql.append(" and ").append(DatabaseUtils.getColumnName(field, true)).append("=").append(genMybatisParamPlaceholder(field, null));
 	}
 
 }

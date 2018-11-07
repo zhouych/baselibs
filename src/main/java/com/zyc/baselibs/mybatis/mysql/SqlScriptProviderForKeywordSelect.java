@@ -39,7 +39,7 @@ public class SqlScriptProviderForKeywordSelect extends SqlScriptProviderSupport 
 		ReflectUtils.scanFields(clazz, new Visitor<Field, Boolean>() {
 			public Boolean visit(Field field) {
 				if(validValue(field, entity)) {
-					appendSqlWhereConditon(selectSql, field);
+					appendSqlWhereConditon(selectSql, field, PKEY_ENTITY);
 				}
 				if(StringUtils.isNotBlank(keyword)) {
 					appendSqlWhereKeywordMatch(keywordMatchSql, field);
@@ -52,15 +52,13 @@ public class SqlScriptProviderForKeywordSelect extends SqlScriptProviderSupport 
 			selectSql.append(" and (1=2").append(keywordMatchSql).append(")");
 		}
 		
-		if(logger.isDebugEnabled()) {
-			logger.debug(EX_METHOD_GENERATESQL + selectSql.toString());
-		}
-		
-		return selectSql.toString();
+		String sql = selectSql.toString();
+		logger.debug(EX_METHOD_GENERATESQL + sql);
+		return sql;
 	}
 
-	protected void appendSqlWhereConditon(final StringBuilder targetSql, Field field) {
-		targetSql.append(" and ").append(DatabaseUtils.getColumnName(field, true)).append("=").append(genMybatisParamPlaceholder(field));
+	protected void appendSqlWhereConditon(final StringBuilder targetSql, Field field, String paramVarName) {
+		targetSql.append(" and ").append(DatabaseUtils.getColumnName(field, true)).append("=").append(genMybatisParamPlaceholder(field, paramVarName));
 	}
 
 	protected void appendSqlWhereKeywordMatch(final StringBuilder keywordMatchSql, Field field) {
