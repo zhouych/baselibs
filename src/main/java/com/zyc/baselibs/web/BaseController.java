@@ -41,14 +41,17 @@ public abstract class BaseController {
     	model.addAttribute("actionText", action.getText());
     	model.addAttribute("allDataStatus", DataStatus.toList());
     	model.addAttribute("readonly", readonly || !DataStatus.ENABLED.getValue().equals(entity.getDatastatus()));
+    	this.attributeReturnUrl(model);
     	
+    	return this.getCommonPath() + "/detail";
+    }
+    
+    protected void attributeReturnUrl(Model model) {
     	HttpServletRequest request = this.getRequest();
     	if(request != null) {
     		String returnUrl = this.getParamReturnUrl();
     		model.addAttribute("returnUrl", StringUtils.isBlank(returnUrl) ? this.getDetailReturnUrlDefaults() : returnUrl); //记录上一次url，以便返回
     	}
-    	
-    	return this.getCommonPath() + "/detail";
     }
     
     protected String getParamReturnUrl() {

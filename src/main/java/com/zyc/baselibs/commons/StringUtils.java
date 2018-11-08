@@ -38,6 +38,14 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
     	
     	return _enum;
     }
+	
+	public static <T extends Enum<T>> T toEnumIgnoreCase(Class<T> enumType, String value) {
+		try {
+			return toEnum(enumType, value.toUpperCase());
+		} catch (BussinessException e) {
+			throw new RuntimeException("This enumeration value is not supported. (value=" + value + ")", e);
+		}
+	}
     
 	static final String COMMASPACE = ", ";
 
