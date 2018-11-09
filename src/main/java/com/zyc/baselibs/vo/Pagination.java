@@ -1,5 +1,7 @@
 package com.zyc.baselibs.vo;
 
+import java.util.List;
+
 import com.zyc.baselibs.commons.StringUtils;
 
 /**
@@ -11,8 +13,10 @@ public class Pagination {
 	
 	private int pageNumber;
 	private int pageRowCount;
+	private List<SortField> prevSorts;
 	private String order;
 	private boolean asc;
+	private List<SortField> nextSorts;
 
 	public Pagination() {
 		
@@ -60,6 +64,18 @@ public class Pagination {
 	}
 	
 	/**
+	 * 优先排序信息：处于当前对象的order字段之前的排序信息列表
+	 * @return
+	 */
+	public List<SortField> getPrevSorts() {
+		return prevSorts;
+	}
+
+	public void setPrevSorts(List<SortField> prevSorts) {
+		this.prevSorts = prevSorts;
+	}
+
+	/**
 	 * 获取排序字段（查询实体对象的字段名称）。
 	 * @return
 	 */
@@ -91,7 +107,19 @@ public class Pagination {
 	public void setAsc(boolean asc) {
 		this.asc = asc;
 	}
-	
+
+	/**
+	 * 最后排序信息：处于当前对象的order字段之后的排序信息列表
+	 * @return
+	 */
+	public List<SortField> getNextSorts() {
+		return nextSorts;
+	}
+
+	public void setNextSorts(List<SortField> nextSorts) {
+		this.nextSorts = nextSorts;
+	}
+
 	/**
 	 * 获取分页在数据库的起始行索引
 	 * @return
