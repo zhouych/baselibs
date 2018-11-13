@@ -5,19 +5,22 @@ import java.util.List;
 
 import com.zyc.baselibs.vo.EntryBean;
 
-public enum MemberRelation {
+public enum TreeNodeRelationship {
 	//ancestor("ancestor", "祖先"),
-	//parents("parents", "父辈（父亲及其兄弟姐妹）"),
-	//father("father", "父亲"),
-	SELF("self", "本身（自己）"),
-	PEER("peer", "同辈（自己以及兄弟姐妹）"),
-	CHILDREN("children", "成员（子女）"),
-	DESCENDANT("descendant", "成员及后代（子孙后代）");
+	//parents("parents", "父辈"),
+	//father("father", "父级"),
+	SELF("self", "本身"),
+	PEER("peer", "同辈"),
+	PEERLEAF("peerleaf", "同辈（叶子）"),
+	CHILDREN("children", "成员"),
+	CHILDRENLEAF("childrenleaf", "成员（叶子）"),
+	DESCENDANT("descendant", "成员及后代"),
+	DESCENDANTLEAF("descendantleaf", "成员及后代（叶子）");
 	
 	private String value;
 	private String text;
 
-	private MemberRelation(String value, String text) {
+	private TreeNodeRelationship(String value, String text) {
 		this.value = value;
 		this.text = text;
 	}
@@ -32,7 +35,7 @@ public enum MemberRelation {
 	
 	public static List<EntryBean> toList() {
 		List<EntryBean> list = new ArrayList<EntryBean>();
-		for (MemberRelation ds : MemberRelation.values()) {
+		for (TreeNodeRelationship ds : TreeNodeRelationship.values()) {
 			list.add(new EntryBean(ds.getValue(), ds.getText()));
 		}
 		return list;
