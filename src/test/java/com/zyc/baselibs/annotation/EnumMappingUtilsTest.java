@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.zyc.baselibs.entities.DataStatus;
+import com.zyc.baselibs.data.DataStatus;
 import com.zyc.baselibs.ex.IllegalValueException;
 
 public class EnumMappingUtilsTest {

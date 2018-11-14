@@ -13,9 +13,12 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.zyc.baselibs.commons.Log4jUtlis;
 import com.zyc.baselibs.commons.StringUtils;
+import com.zyc.baselibs.data.DataStatus;
 import com.zyc.baselibs.entities.BaseEntity;
-import com.zyc.baselibs.entities.DataStatus;
 import com.zyc.baselibs.ex.ExceptionUtils;
+import com.zyc.baselibs.service.EnumService;
+import com.zyc.baselibs.vo.EntryBeanable;
+
 public abstract class BaseController {
 	
     protected static final String restPath = "/api";
@@ -33,6 +36,16 @@ public abstract class BaseController {
 		Log4jUtlis.error(logger, message, e);
 	}
 
+    protected <T extends Enum<?> & EntryBeanable> ResponseResult enumToList(Class<T> clazz, EnumService enumService, Logger logger) {
+    	ResponseResult result = new ResponseResult();
+		try {
+			result.setData(enumService.enumToList(clazz));
+		} catch (Exception e) {
+			this.handleException(result, e, logger);
+		}
+		return result;
+    }
+    
     protected <T extends BaseEntity> String requestDetail(Model model, ClientAction action, String entityId, boolean readonly, T entity) {
     	model.addAttribute("action", action.getValue());
     	for (ClientAction value : ClientAction.values()) {

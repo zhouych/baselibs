@@ -6,7 +6,7 @@ import java.lang.reflect.Field;
 
 import com.zyc.baselibs.commons.Counter;
 import com.zyc.baselibs.commons.Visitor;
-import com.zyc.baselibs.entities.DataStatus;
+import com.zyc.baselibs.data.DataStatus;
 
 public class AnnotationUtilsTest {
 	

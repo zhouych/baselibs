@@ -1,6 +1,6 @@
 package com.zyc.baselibs.web.bootstrap;
 
-import com.zyc.baselibs.web.EmptyNodeType;
+import com.zyc.baselibs.data.EmptyNodeType;
 
 public class HierarchySelectNode implements java.io.Serializable {
 	

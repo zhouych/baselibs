@@ -261,4 +261,17 @@ public class ReflectUtils {
 		
 		return method.getAnnotation(annotationClazz);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T extends Enum<?>> T[] invokeValues(Class<T> clazz) {
+		Object ret;
+		
+		try {
+			ret = clazz.getMethod("values").invoke(null);
+		} catch (Exception e) {
+			throw new RuntimeException("[invokeValues(...)] - " + e.getMessage(), e);
+		}
+		
+		return ret == null ? null : (T[]) ret;
+	}
 }

@@ -8,6 +8,7 @@ import com.zyc.baselibs.annotation.DatabaseColumn;
 import com.zyc.baselibs.annotation.EnumMapping;
 import com.zyc.baselibs.annotation.FieldRule;
 import com.zyc.baselibs.commons.StringUtils;
+import com.zyc.baselibs.data.DataStatus;
 
 public abstract class BaseEntity implements BaseEntityLabelable {
 	

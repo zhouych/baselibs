@@ -1,11 +1,12 @@
-package com.zyc.baselibs.entities;
+package com.zyc.baselibs.data;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.zyc.baselibs.vo.EntryBean;
+import com.zyc.baselibs.vo.EntryBeanable;
 
-public enum TreeNodeRelationship {
+public enum TreeNodeRelationship implements EntryBeanable {
 	//ancestor("ancestor", "祖先"),
 	//parents("parents", "父辈"),
 	//father("father", "父级"),
