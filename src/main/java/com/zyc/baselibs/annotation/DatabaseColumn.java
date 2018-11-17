@@ -52,4 +52,10 @@ public @interface DatabaseColumn {
 	 * @return
 	 */
 	boolean nullable() default true;
+	
+	/**
+	 * 虚拟一个Java类型，如：Clob
+	 * @return
+	 */
+	String virtualType() default "";
 }

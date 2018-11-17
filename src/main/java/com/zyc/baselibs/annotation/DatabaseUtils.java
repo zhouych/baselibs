@@ -73,6 +73,7 @@ public class DatabaseUtils {
 		fieldType2jdbcType.put("double", JDBCType.DOUBLE);
 		fieldType2jdbcType.put("java.lang.Double", JDBCType.DOUBLE);
 		fieldType2jdbcType.put("java.lang.String", JDBCType.VARCHAR);
+		fieldType2jdbcType.put("Clob", JDBCType.CLOB);
 		fieldType2jdbcType.put("java.util.Date", JDBCType.TIMESTAMP);
 	}
 	
@@ -82,7 +83,10 @@ public class DatabaseUtils {
 		if(jdbcType == null || jdbcType == JDBCType.NULL) {
 			String fieldType = field.getType().getName();
 			if(!fieldType2jdbcType.containsKey(fieldType)) {
-				throw new RuntimeException("当前字段[" + field.getName() + "]的类型[type=" + fieldType + "]对应的java.sql.JDBCType未定义。");
+				fieldType = column != null ? column.virtualType() : null;
+				if(StringUtils.isBlank(fieldType) || !fieldType2jdbcType.containsKey(fieldType)) {
+					throw new RuntimeException("当前字段[" + field.getName() + "]的类型[type=" + fieldType + "]对应的java.sql.JDBCType未定义。");
+				}
 			}
 			jdbcType = fieldType2jdbcType.get(fieldType);
 		}
@@ -112,6 +116,7 @@ public class DatabaseUtils {
 		jdbcType2mysqlDbType.put(JDBCType.VARCHAR, "VARCHAR");
 		jdbcType2mysqlDbType.put(JDBCType.NVARCHAR, "NVARCHAR");
 		jdbcType2mysqlDbType.put(JDBCType.TIMESTAMP, "TIMESTAMP");
+		jdbcType2mysqlDbType.put(JDBCType.CLOB, "MEDIUMBLOB");
 	}
 
 	public static String getMysqlDbType(Field field) {
