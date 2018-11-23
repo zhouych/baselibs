@@ -24,6 +24,7 @@ public class TreeViewNode implements java.io.Serializable {
 	private String backColor; //节点的背景色，覆盖全局的背景色选项。
 	private List<String> tags = new ArrayList<String>(); //通过结合全局showTags选项来在列表树节点的右边添加额外的信息。
 	private List<TreeViewNode> nodes = null; //子节点
+	private String tooltip;
 	private Map<String, Object> attrs = new HashMap<String, Object>(); //其他额外的属性，追加到节点对应html元素的data-xxx上。
 	
 	public String getText() {
@@ -80,16 +81,22 @@ public class TreeViewNode implements java.io.Serializable {
 	public void setTags(List<String> tags) {
 		this.tags = tags;
 	}
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
 	public List<TreeViewNode> getNodes() {
 		return nodes;
 	}
 	public void setNodes(List<TreeViewNode> nodes) {
 		this.nodes = nodes;
 	}
+	public String getTooltip() {
+		return tooltip;
+	}
+	public void setTooltip(String tooltip) {
+		this.tooltip = tooltip;
+	}
 	public Map<String, Object> getAttrs() {
 		return attrs;
+	}
+	public void setAttrs(Map<String, Object> attrs) {
+		this.attrs = attrs;
 	}
 }

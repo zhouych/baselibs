@@ -2,6 +2,8 @@ package com.zyc.baselibs.service;
 
 import org.springframework.stereotype.Service;
 
+import com.zyc.baselibs.entities.BaseEntity;
+
 @Service
 public class GeneralDataServiceImpl extends AbstractBaseService implements GeneralDataService {
 
@@ -13,4 +15,8 @@ public class GeneralDataServiceImpl extends AbstractBaseService implements Gener
 		throw new RuntimeException("The type GeneralDataService must implement the inherited abstract method EntityDeleteService.deleteOnPhysical(String)");
 	}
 
+	public <T extends BaseEntity> T load(String entityId, Class<T> clazz) {
+		throw new RuntimeException("The type GeneralDataService must implement the inherited abstract method EntityDeleteService.load(String, Class<T>)");
+	}
+	
 }

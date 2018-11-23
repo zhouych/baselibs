@@ -1,7 +1,9 @@
 package com.zyc.baselibs.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
 
@@ -42,5 +44,13 @@ public abstract class AbstractBaseService extends AbstractEntityDeleteService im
 			beans.add(bean);
 		}
 		return beans;
+	}
+	
+	public <T extends Enum<?> & EntryBeanable> Map<String, String> enumToMap(Class<T> clazz) {
+		Map<String, String> map = new HashMap<String, String>();
+		for (T value : ReflectUtils.invokeValues(clazz)) {
+			map.put(value.getValue(), value.getText());
+		}
+		return map;
 	}
 }
